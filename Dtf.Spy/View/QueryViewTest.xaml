@@ -1,0 +1,10 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Dta.Spy.View" x:Class="Dta.Spy.View.QueryViewTest"
+    DataContext="{Binding Query, Source={StaticResource Locator}}"
+        Title="QueryViewTest" Height="300" Width="300">
+    <Grid>
+        <local:QueryView />
+    </Grid>
+</Window>

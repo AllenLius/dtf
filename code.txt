@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="UiElement"
+    targetNamespace="http://tempuri.org/UiInfo.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/UiInfo.xsd"
+    xmlns:mstns="http://tempuri.org/UiInfo.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <!--UiInfo root-->
+  <xs:element name="UiInfo">
+    <xs:complexType>
+      <xs:sequence>
+        
+        <!--Resources-->
+        <xs:element name="Resources" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Resource" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Name" type="xs:Name" use="required"></xs:attribute>
+                  <xs:attribute name="HandlerType" type="xs:Name" use="required"></xs:attribute>
+                  <xs:attribute name="ResourceKey" type="xs:string" use="required"></xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <!--UiElements-->
+        <xs:element name="UiElements" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UiElement" maxOccurs="unbounded" type="ExpressionType"></xs:element>
+            </xs:sequence>
+          </xs:complexType>
+          <xs:key name="NameKey">
+            <xs:selector xpath="mstns:UiElement" />
+            <xs:field xpath="@Name" />
+          </xs:key>
+          <xs:keyref name="ParentRef" refer="NameKey">
+            <xs:selector xpath="mstns:UiElement" />
+            <xs:field xpath="@Parent" />
+          </xs:keyref>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <!--unique-->
+    <xs:unique name="NameUnique">
+      <xs:selector xpath="mstns:*/*" />
+      <xs:field xpath="@Name" />
+    </xs:unique>
+  </xs:element>
+
+  <xs:complexType name="ExpressionType">
+    <xs:sequence>
+      <xs:element name="BeginsWith2">
+        <xs:complexType mixed="true">
+          <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Contains2">
+        <xs:complexType mixed="true">
+          <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="Expression" abstract="true"></xs:element>
+  <xs:element name="PropertyExpression" abstract="true" substitutionGroup="Expression"></xs:element>
+  <xs:element name="GroupExpression" abstract="true" substitutionGroup="Expression">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="Expression" minOccurs="0"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--BeginsWith Expression-->
+  <xs:element name="BeginsWith" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Contains Expression-->
+  <xs:element name="Contains" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--EndsWith Expression-->
+  <xs:element name="EndsWith" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Equals Expression-->
+  <xs:element name="Equals" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--EqualsIgnoreCase Expression-->
+  <xs:element name="EqualsIgnoreCase" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--FormattedContains Expression-->
+  <xs:element name="FormattedContains" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--NotEquals Expression-->
+  <xs:element name="NotEquals" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--And Expression-->
+  <xs:element name="And" substitutionGroup="GroupExpression"></xs:element>
+
+  <!--Or Expression-->
+  <xs:element name="Or" substitutionGroup="GroupExpression"></xs:element>
+  
+</xs:schema>
+
+
+
+-----------------
+
+    public interface ICodeGen
+    {
+        void OnCreateMethod(CodeMemberMethod method);
+    }
+
+    public interface IInvokePattern
+    {
+        void Invoke();
+    }
+
+    public interface IInvokePatternFactory : ICodeGen
+    {
+        IInvokePatternFactory Create(object endpoint, );
+    }
+
+    public class WinInvokePattern : IInvokePatternFactory
+    {
+        public void OnCreateMethod(CodeMemberMethod method)
+        {
+            method
+        }
+    }
+
+-------
+
+public abstract class Endpoint
+{
+    private string m_uri;
+
+    public EndPoint(string uri)
+    {
+        m_uri = uri;
+    }
+
+    public T QueryInterface<T>() where T : class;
+
+    public string Uri
+    {
+        get
+        {
+            return m_uri;
+        }
+    }
+}
+
+public interface ICodeGen
+{
+    void Generate(CodeNamespace ns);
+}
+
+public interface IRemotePattern : ICodeGen
+{
+    Endpoint Endpoint { get; }
+    Expression Ui { get; }
+}
+
+    public class RemotePattern : IRemotePattern
+    {
+        private Endpoint m_endpoint;
+        private Expression m_ui;
+
+        public RemotePattern(Endpoint endpoint, Expression ui)
+        {
+            m_endpoint = endpoint;
+            m_ui = ui;
+        }
+
+        public Endpoint Endpoint
+        {
+            get
+            {
+                return m_endpoint;
+            }
+        }
+        public Expression Ui
+        {
+            get
+            {
+                return m_ui;
+            }
+        }
+    }
+
+public interface IInvokePattern : IRemotePattern
+{
+    void Invoke();
+}
+
+public interface IRemoteFactory
+{
+    Endpoint Endpoint { get; }
+}
+
+public interface IInvokePatternFactory : IRemoteFactory
+{
+    IInvokePattern Create(string ui);
+}
+
+public interface IAppFactory
+{
+    IApp Create();
+}
+
+public interface IApp
+{
+    void Start(string fileName, string argments);
+}
+
+public class WinEndpoint : Endpoint
+{
+    public WinEndpoint(string uri)
+        : base(uri)
+    {
+    }
+
+    public T QueryInterface<T>()
+    {
+        object instance = null;
+        if (typeof(T)==typeof(IInvokePatternFactory))
+        {
+            instance = new PatternRemoteFactory<IInvokePatternFactory>(this);
+        }
+        return instance as T;
+    }
+}
+
+public class RemoteFactory<T> where T : IRemoteFactory, IRemoteFactory
+{
+    private Endpoint m_endpoint;
+
+    public RemoteFactory(Endpoint endpoint)
+    {
+        m_endpoint = endpoint;
+    }
+
+    public Endpoint
+    {
+        get
+        {
+            return m_endpoint;
+        }
+    }
+}
+
+public class PatternRemoteFactory<T> where T : IRemotePatternFactory, IRemoteFactory<T>
+{
+    public PatternRemoteFactory<T> (Endpoint endpoint)
+        : base(endpoint)
+    {
+    }
+
+    public T Create(Expression ui)
+    {
+        return Proxy.Create<T>(Endpoint);
+    }
+}
+
+// WinDriver
+public class WinInvokePattern : IInvokePattern
+{
+    public WinInvokePattern(string ui)
+    {
+    }
+
+    public Invoke()
+    {
+        //TODO: invoke ui
+    }
+}
+
+// Ssd.cs (code gen)
+public class Ssd
+{
+    private IApp m_app;
+
+    public IApp App
+    {
+        get
+        {
+            if (m_app == null)
+            {
+                var appFactory = Endpoint.QueryInterface<IAppFactory>();
+                m_app = appFactory.Create();
+            }
+            return m_app;
+        }
+    }
+
+    public Ui Ui { get; }
+
+    public class Ui
+    {
+        private Endpoint m_endpoint;
+
+        public Ui(Endpoint endpoint)
+        {
+            m_endpoint = endpoint;
+        }
+
+        public BtnNext BtnNext
+        {
+            get
+            {
+                if (m_btnNext == null)
+                {
+                    m_btnNext = new BtnNext(Endpoint, ui);
+                }
+            }
+        }
+
+        public Endpoint Endpoint
+        {
+            get
+            {
+                return m_endpoint;
+            }
+        }
+
+        public class BtnNext : UiObject, IInvokePattern
+        {
+            public BtnNext(Endpoint endpoint, Expression ui)
+            {
+            }
+
+            public void Invoke()
+            {
+                if (m_invokePattern == null)
+                {
+                    m_invokePattern = Endpoint.QueryInterface<IInvokePatternFactory>().Create(Ui);
+                }
+                m_invokePattern.Invoke();
+            }
+        }
+    }
+}

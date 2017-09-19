@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="UiElement"
+    targetNamespace="http://tempuri.org/UiInfo.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/UiInfo.xsd"
+    xmlns:mstns="http://tempuri.org/UiInfo.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <!--UiInfo root-->
+  <xs:element name="UiInfo">
+    <xs:complexType>
+      <xs:sequence>
+        
+        <!--Resources-->
+        <xs:element name="Resources" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Resource" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Name" type="xs:Name" use="required"></xs:attribute>
+                  <xs:attribute name="HandlerType" type="xs:Name" use="required"></xs:attribute>
+                  <xs:attribute name="ResourceKey" type="xs:string" use="required"></xs:attribute>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        
+        <!--UiElements-->
+        <xs:element name="UiElements" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UiElement" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence minOccurs="1" maxOccurs="1">
+                    <xs:choice>
+                      <xs:element ref="Expression" minOccurs="0"></xs:element>
+                    </xs:choice>
+                  </xs:sequence>
+                  <xs:attribute name="Name" type="xs:Name" use="required" />
+                  <xs:attribute name="Patterns" use="optional" />
+                  <xs:attribute name="Parent" type="xs:Name" use="optional" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+          <xs:key name="NameKey">
+            <xs:selector xpath="mstns:UiElement" />
+            <xs:field xpath="@Name" />
+          </xs:key>
+          <xs:keyref name="ParentRef" refer="NameKey">
+            <xs:selector xpath="mstns:UiElement" />
+            <xs:field xpath="@Parent" />
+          </xs:keyref>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <!--unique-->
+    <xs:unique name="NameUnique">
+      <xs:selector xpath="mstns:*/*" />
+      <xs:field xpath="@Name" />
+    </xs:unique>
+  </xs:element>
+
+  <xs:element name="Expression" abstract="true"></xs:element>
+  <xs:element name="PropertyExpression" abstract="true" substitutionGroup="Expression"></xs:element>
+  <xs:element name="GroupExpression" abstract="true" substitutionGroup="Expression">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="Expression" minOccurs="0"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--BeginsWith Expression-->
+  <xs:element name="BeginsWith" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Contains Expression-->
+  <xs:element name="Contains" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--EndsWith Expression-->
+  <xs:element name="EndsWith" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Equals Expression-->
+  <xs:element name="Equals" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--EqualsIgnoreCase Expression-->
+  <xs:element name="EqualsIgnoreCase" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--FormattedContains Expression-->
+  <xs:element name="FormattedContains" substitutionGroup="PropertyExpression">
+    <xs:complexType mixed="true">
+      <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
+    </xs:complexType>
+  </xs:element>
+
+  <!--Not Expression-->
+  <xs:element name="Not" substitutionGroup="Expression">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="1">
+        <xs:choice>
+          <xs:element ref="Expression" minOccurs="0"></xs:element>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <!--And Expression-->
+  <xs:element name="And" substitutionGroup="GroupExpression"></xs:element>
+
+  <!--Or Expression-->
+  <xs:element name="Or" substitutionGroup="GroupExpression"></xs:element>
+  
+</xs:schema>
