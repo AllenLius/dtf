@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Dta.Spy.Model
+namespace Dtf.Spy.Model
 {
     public class QueryCondition
     {

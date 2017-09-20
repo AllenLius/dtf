@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public static class ExceptionExtension
     {

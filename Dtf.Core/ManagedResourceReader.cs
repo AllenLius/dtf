@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Resources;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class ManagedResourceReader : IResourceReader
     {

@@ -1,6 +1,6 @@
 ﻿
 using System.Diagnostics;
-namespace Dta.Core
+namespace Dtf.Core
 {
     /// <summary>
     /// Process name to Process Id

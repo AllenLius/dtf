@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class JobProxy
     {

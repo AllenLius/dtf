@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Configuration.Install;
 
-namespace Dta.WinDriver
+namespace Dtf.WinDriver
 {
     class Program
     {

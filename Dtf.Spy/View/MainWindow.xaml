@@ -1,11 +1,11 @@
-﻿<Window x:Class="Dta.Spy.View.MainWindow"
+﻿<Window x:Class="Dtf.Spy.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:my="clr-namespace:Dta.Spy.View"
+        xmlns:my="clr-namespace:Dtf.Spy.View"
         xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
-                xmlns:local="clr-namespace:Dta.Spy.View"
+                xmlns:local="clr-namespace:Dtf.Spy.View"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" Loaded="Window_Loaded">
     <Grid>

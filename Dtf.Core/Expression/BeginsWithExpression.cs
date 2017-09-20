@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     [XmlRoot(ElementName = "BeginsWith")]
     public class BeginsWithExpression : PropertyExpression

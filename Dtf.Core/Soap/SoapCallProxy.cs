@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class SoapCallProxy
     {

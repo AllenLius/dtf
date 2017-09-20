@@ -6,7 +6,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Text;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class TestConfig
     {

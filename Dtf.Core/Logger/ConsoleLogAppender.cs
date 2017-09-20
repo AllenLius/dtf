@@ -1,7 +1,7 @@
 ﻿using System;
-using Dta.Core;
+using Dtf.Core;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class ConsoleLogAppender : ILogAppender
     {

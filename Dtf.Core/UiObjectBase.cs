@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public abstract class UiObjectBase
     {

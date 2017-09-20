@@ -3,7 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
     public class NativeMethods
     {

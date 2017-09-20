@@ -9,9 +9,9 @@ using System.ServiceProcess;
 using System.Net;
 using System.Web;
 using System.Reflection;
-using Dta.Core;
+using Dtf.Core;
 
-namespace Dta.Server
+namespace Dtf.Server
 {
     public class ProxyService : ServiceBase
     {
@@ -22,7 +22,7 @@ namespace Dta.Server
 
         public ProxyService()
         {
-            this.ServiceName = "DtaJobServer";
+            this.ServiceName = "DtfJobServer";
             this.CanHandleSessionChangeEvent = false;
             this.CanHandlePowerEvent = false;
             this.CanShutdown = false;

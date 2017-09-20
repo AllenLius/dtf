@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.Net;
 using System.Web;
-using Dta.Core;
+using Dtf.Core;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class HttpJobListener
     {

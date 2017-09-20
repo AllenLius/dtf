@@ -2,7 +2,7 @@
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     using System.Collections.Generic;
     using System.Linq;

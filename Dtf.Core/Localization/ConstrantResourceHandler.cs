@@ -1,5 +1,5 @@
 ﻿
-namespace Dta.Core
+namespace Dtf.Core
 {
     [HandlerName("ConstantResourceHandler")]
     public class ConstantResourceHandler : IResourceHandler

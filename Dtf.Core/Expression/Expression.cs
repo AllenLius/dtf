@@ -7,7 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public abstract class Expression : IXmlSerializable
     {
@@ -55,7 +55,7 @@ namespace Dta.Core
 
         //public static string Clean(string xml)
         //{
-        //    //xml = "<And xmlns=\"http://schemas.datacontract.org/2004/07/Dta.Core\" />";
+        //    //xml = "<And xmlns=\"http://schemas.datacontract.org/2004/07/Dtf.Core\" />";
         //    XElement root = XElement.Parse(xml);
         //    XElement result = Clean(root);
         //    return result.ToString();

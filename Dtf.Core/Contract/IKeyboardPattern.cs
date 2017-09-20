@@ -1,5 +1,5 @@
 ﻿
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
     public interface IKeyboardPattern
     {

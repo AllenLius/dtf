@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
     public enum ViewWalkerType
     {

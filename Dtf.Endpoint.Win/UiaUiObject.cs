@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
-using Dta.Core;
+using Dtf.Core;
 
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
     public class UiaUiObject : UiObjectBase
     {

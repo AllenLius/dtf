@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Dta.Spy
+namespace Dtf.Spy
 {
     /// <summary>
     /// Interaction logic for App.xaml

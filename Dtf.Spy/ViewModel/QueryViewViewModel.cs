@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
-using Dta.Spy.Model;
+using Dtf.Spy.Model;
 
-namespace Dta.Spy.ViewModel
+namespace Dtf.Spy.ViewModel
 {
     public class QueryViewViewModel : ViewModelBase
     {

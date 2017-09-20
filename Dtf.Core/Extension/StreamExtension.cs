@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public static class StreamExtension
     {

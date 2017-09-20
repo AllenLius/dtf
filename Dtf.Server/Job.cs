@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace Dta.Server
+namespace Dtf.Server
 {
     public enum JobStatus
     {

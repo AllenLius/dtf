@@ -100,5 +100,10 @@
         <Equals Property="ControlType">Button</Equals>
       </And>
     </UiElement>
+    <UiElement Name="Test" Parent="Equals">
+      <And>
+        <Equals Property="ControlType">Button</Equals>
+      </And>
+    </UiElement>
   </UiElements>
 </UiInfo>

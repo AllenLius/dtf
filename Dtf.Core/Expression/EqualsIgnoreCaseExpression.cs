@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     [XmlRoot(ElementName = "EqualsIgnoreCase")]
     public class EqualsIgnoreCaseExpression : PropertyExpression

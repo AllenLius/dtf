@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dta.CodeGen
+namespace Dtf.CodeGen
 {
     using Microsoft.CSharp;
     using System.Diagnostics;
@@ -12,7 +12,7 @@ namespace Dta.CodeGen
     using System.Text.RegularExpressions;
     using System.CodeDom;
     using System.CodeDom.Compiler;
-    using Dta.Core;
+    using Dtf.Core;
     using System.Reflection;
 
     class Program
@@ -234,7 +234,7 @@ namespace Dta.CodeGen
 
             CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
             codeNs.Imports.Add(new CodeNamespaceImport("System.IO"));
-            codeNs.Imports.Add(new CodeNamespaceImport("Dta.Core"));
+            codeNs.Imports.Add(new CodeNamespaceImport("Dtf.Core"));
             
             CSharpCodeProvider cs = new CSharpCodeProvider();
             StringWriter sw = new StringWriter();

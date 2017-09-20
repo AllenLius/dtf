@@ -1,10 +1,10 @@
 ﻿
-using Dta.Core;
+using Dtf.Core;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
     public class Mouse
     {

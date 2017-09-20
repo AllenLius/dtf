@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     [XmlRoot(ElementName="FormatedContains")]
     public class FormattedContainsExpression : PropertyExpression

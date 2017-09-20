@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Dta.Core;
+using Dtf.Core;
 
-namespace Dta.Spy.Model
+namespace Dtf.Spy.Model
 {
     public class UiTreeNode : ObservableObject
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     /// <summary>
     /// Defines available log levels.

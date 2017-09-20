@@ -5,7 +5,7 @@ using System.Reflection;
 using System.ServiceModel;
 using System.Xml;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class SoapReturnMessage : SoapMessage
     {

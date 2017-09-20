@@ -10,10 +10,10 @@ using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Dta.Core;
-using Dta.Spy.Model;
+using Dtf.Core;
+using Dtf.Spy.Model;
 
-namespace Dta.Spy.ViewModel
+namespace Dtf.Spy.ViewModel
 {
     public class DepotViewModel : ViewModelBase
     {

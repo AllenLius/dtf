@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
     using System.ServiceModel;
-    using Dta.Core;
+    using Dtf.Core;
 
     [ServiceContract]
     public interface IWinAutomation

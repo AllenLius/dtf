@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     [XmlRoot(ElementName = "Or")]
     public class OrExpression : GroupExpression

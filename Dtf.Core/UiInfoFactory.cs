@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     internal class UiInfoFactory
     {

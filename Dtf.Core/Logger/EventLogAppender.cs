@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class EventLogAppender : ILogAppender
     {

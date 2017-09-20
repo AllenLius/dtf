@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public static class SoapSerializeHelper
     {

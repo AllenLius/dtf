@@ -11,9 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Dta.Spy.ViewModel;
+using Dtf.Spy.ViewModel;
 
-namespace Dta.Spy.View
+namespace Dtf.Spy.View
 {
     /// <summary>
     /// Interaction logic for QueryViewTest.xaml

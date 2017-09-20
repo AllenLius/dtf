@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class Log
     {

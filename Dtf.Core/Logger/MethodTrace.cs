@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class MethodTrace : IDisposable
     {

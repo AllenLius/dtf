@@ -12,10 +12,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-using Dta.Spy.Model;
+using Dtf.Spy.Model;
 
 
-namespace Dta.Spy.View
+namespace Dtf.Spy.View
 {
     /// <summary>
     /// Interaction logic for QueryView.xaml

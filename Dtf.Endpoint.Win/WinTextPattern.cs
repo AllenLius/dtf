@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
-    using Dta.Core;
+    using Dtf.Core;
 
     internal class WinTextPattern : ITextPattern
     {

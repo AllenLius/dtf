@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
 
-namespace Dta.Server
+namespace Dtf.Server
 {
     [RunInstaller(true)]
     public class ProjectInstaller : Installer
@@ -21,8 +21,8 @@ namespace Dta.Server
             m_serviceProcessInstaller.Password = null;
             m_serviceProcessInstaller.Username = null;
 
-            m_serviceInstaller.DisplayName = "Dta Job Server";
-            m_serviceInstaller.ServiceName = "DtaJobServer";
+            m_serviceInstaller.DisplayName = "Dtf Job Server";
+            m_serviceInstaller.ServiceName = "DtfJobServer";
             m_serviceInstaller.StartType = ServiceStartMode.Automatic;
 
             Installers.AddRange(new Installer[] { m_serviceProcessInstaller, m_serviceInstaller });

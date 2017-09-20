@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     [Pattern("Text")]
     public interface ITextPattern

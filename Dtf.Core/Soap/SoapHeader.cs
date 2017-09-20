@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class SoapHeader
     {

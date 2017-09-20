@@ -1,11 +1,11 @@
 ﻿
-namespace Dta.WinDriver
+namespace Dtf.WinDriver
 {
-    using Dta.Core;
+    using Dtf.Core;
     using System;
     using System.Configuration;
     using System.ServiceProcess;
-    using Dta.Endpoint.Win;
+    using Dtf.Endpoint.Win;
 
     internal class WinService : ServiceBase
     {

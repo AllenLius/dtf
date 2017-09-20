@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 
-namespace Dta.Spy.View
+namespace Dtf.Spy.View
 {
     /// <summary>
     /// Interaction logic for UiTreeView.xaml

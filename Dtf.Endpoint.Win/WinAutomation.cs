@@ -2,12 +2,12 @@
 using System.Diagnostics;
 using System.ServiceModel;
 using System.Windows.Automation;
-using Dta.Core;
+using Dtf.Core;
 using System.Threading;
 using System.Windows.Forms;
 using System.Linq;
 
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
     public class WinAutomation : IWinAutomation
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     internal class  UiElementInfo
     {

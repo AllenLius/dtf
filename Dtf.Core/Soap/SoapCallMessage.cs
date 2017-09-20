@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class SoapCallMessage : SoapMessage
     {

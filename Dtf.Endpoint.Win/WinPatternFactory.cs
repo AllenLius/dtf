@@ -1,11 +1,11 @@
-﻿namespace Dta.Endpoint.Win
+﻿namespace Dtf.Endpoint.Win
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Dta.Core;
+    using Dtf.Core;
 
     internal class WinPatternFactory : IPatternFactory
     {

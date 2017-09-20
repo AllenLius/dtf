@@ -1,20 +1,20 @@
 namespace CalcTest
 {
     using System.IO;
-    using Dta.Core;
+    using Dtf.Core;
     
     
     public partial class CalcUi
     {
         
-        private Dta.Core.Endpoint m_endpoint;
+        private Dtf.Core.Endpoint m_endpoint;
         
-        public CalcUi(Dta.Core.Endpoint endpoint)
+        public CalcUi(Dtf.Core.Endpoint endpoint)
         {
             m_endpoint = endpoint;
         }
         
-        public Dta.Core.Endpoint Endpoint
+        public Dtf.Core.Endpoint Endpoint
         {
             get
             {
@@ -26,7 +26,7 @@ namespace CalcTest
         {
             get
             {
-                return Dta.Core.ResourceManager.GetObject("ProcessIdResourceHandler", "Calculator");
+                return Dtf.Core.ResourceManager.GetObject("ProcessIdResourceHandler", "Calculator");
             }
         }
         
@@ -34,7 +34,7 @@ namespace CalcTest
         {
             get
             {
-                return Dta.Core.ResourceManager.GetObject("CallbackResourceHandler", "Var");
+                return Dtf.Core.ResourceManager.GetObject("CallbackResourceHandler", "Var");
             }
         }
         
@@ -166,10 +166,18 @@ namespace CalcTest
             }
         }
         
+        public UiElements.Test Test
+        {
+            get
+            {
+                return new UiElements.Test(this);
+            }
+        }
+        
         public class UiElements
         {
             
-            public class Calculator : Dta.Core.IUiInspector, Dta.Core.IMousePattern
+            public class Calculator : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -179,7 +187,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -187,7 +195,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -197,66 +205,66 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
             }
             
-            public class Result : Dta.Core.IUiInspector, Dta.Core.IMousePattern
+            public class Result : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -266,7 +274,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -274,7 +282,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -284,66 +292,66 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
             }
             
-            public class Zero : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Zero : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -353,7 +361,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -361,7 +369,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -371,71 +379,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class One : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class One : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -445,7 +453,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -453,7 +461,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -463,71 +471,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Two : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Two : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -537,7 +545,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -545,7 +553,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -555,71 +563,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Three : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Three : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -629,7 +637,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -637,7 +645,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -647,71 +655,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Four : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Four : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -721,7 +729,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -729,7 +737,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -739,71 +747,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Five : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Five : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -813,7 +821,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -821,7 +829,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -831,71 +839,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Six : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Six : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -905,7 +913,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -913,7 +921,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -923,71 +931,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Seven : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Seven : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -997,7 +1005,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -1005,7 +1013,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -1015,71 +1023,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Eight : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Eight : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -1089,7 +1097,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -1097,7 +1105,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -1107,71 +1115,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Nine : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Nine : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -1181,7 +1189,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -1189,7 +1197,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -1199,71 +1207,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Ten : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Ten : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -1273,7 +1281,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -1281,7 +1289,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -1291,71 +1299,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Plus : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Plus : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -1365,7 +1373,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -1373,7 +1381,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -1383,71 +1391,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Minus : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Minus : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -1457,7 +1465,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -1465,7 +1473,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -1475,71 +1483,71 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
                 }
             }
             
-            public class Equals : Dta.Core.IUiInspector, Dta.Core.IMousePattern, Dta.Core.IInvokePattern
+            public class Equals : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern, Dtf.Core.IInvokePattern
             {
                 
                 private CalcUi m_calcUi;
@@ -1549,7 +1557,7 @@ namespace CalcTest
                     m_calcUi = calcUi;
                 }
                 
-                public Dta.Core.Expression Ui
+                public Dtf.Core.Expression Ui
                 {
                     get
                     {
@@ -1557,7 +1565,7 @@ namespace CalcTest
                     }
                 }
                 
-                public Dta.Core.Expression UiFull
+                public Dtf.Core.Expression UiFull
                 {
                     get
                     {
@@ -1567,67 +1575,154 @@ namespace CalcTest
                 
                 public bool Exists()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
                 }
                 
                 public bool Exists(System.TimeSpan timeout)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
                 }
                 
                 public byte[] Capture()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
                 }
                 
                 public string GetProperty(string name)
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
                 }
                 
                 public string[] GetProperties()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
                 }
                 
                 public string GetUi()
                 {
-                    return m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
                 }
                 
                 public void Wait(System.TimeSpan timeout)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
                 }
                 
                 public void Click()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
                 }
                 
-                public void Click(Dta.Core.MouseButton button)
+                public void Click(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Click(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
                 }
                 
                 public void MoveTo()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).MoveTo();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
                 }
                 
-                public void Down(Dta.Core.MouseButton button)
+                public void Down(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Down(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
                 }
                 
-                public void Up(Dta.Core.MouseButton button)
+                public void Up(Dtf.Core.MouseButton button)
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IMousePattern>(UiFull).Up(button);
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
                 
                 public void Invoke()
                 {
-                    m_calcUi.Endpoint.QueryInterface<Dta.Core.IPatternFactory>().Create<Dta.Core.IInvokePattern>(UiFull).Invoke();
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IInvokePattern>(UiFull).Invoke();
+                }
+            }
+            
+            public class Test : Dtf.Core.IUiInspector, Dtf.Core.IMousePattern
+            {
+                
+                private CalcUi m_calcUi;
+                
+                public Test(CalcUi calcUi)
+                {
+                    m_calcUi = calcUi;
+                }
+                
+                public Dtf.Core.Expression Ui
+                {
+                    get
+                    {
+                        return "<And><Equals Property=\"ControlType\">Button</Equals></And>";
+                    }
+                }
+                
+                public Dtf.Core.Expression UiFull
+                {
+                    get
+                    {
+                        return "<Multiple><And><Equals Property=\"ProcessId\">" + m_calcUi.CalcProcessId.ToString() + "</Equals><Equals Property=\"Common.ControlType\">Window</Equals></And><And><Equals Property=\"Name\">Equals</Equals><Equals Property=\"ControlType\">Button</Equals></And><And><Equals Property=\"ControlType\">Button</Equals></And></Multiple>";
+                    }
+                }
+                
+                public bool Exists()
+                {
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists();
+                }
+                
+                public bool Exists(System.TimeSpan timeout)
+                {
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Exists(timeout);
+                }
+                
+                public byte[] Capture()
+                {
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Capture();
+                }
+                
+                public string GetProperty(string name)
+                {
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperty(name);
+                }
+                
+                public string[] GetProperties()
+                {
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetProperties();
+                }
+                
+                public string GetUi()
+                {
+                    return m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).GetUi();
+                }
+                
+                public void Wait(System.TimeSpan timeout)
+                {
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IUiInspectorFactory>().Create(UiFull).Wait(timeout);
+                }
+                
+                public void Click()
+                {
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click();
+                }
+                
+                public void Click(Dtf.Core.MouseButton button)
+                {
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Click(button);
+                }
+                
+                public void MoveTo()
+                {
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).MoveTo();
+                }
+                
+                public void Down(Dtf.Core.MouseButton button)
+                {
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Down(button);
+                }
+                
+                public void Up(Dtf.Core.MouseButton button)
+                {
+                    m_calcUi.Endpoint.QueryInterface<Dtf.Core.IPatternFactory>().Create<Dtf.Core.IMousePattern>(UiFull).Up(button);
                 }
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dta.Server
+namespace Dtf.Server
 {
     [Flags]
     public enum ParameterStyle

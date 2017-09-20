@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 
-namespace Dta.Spy.ViewModel
+namespace Dtf.Spy.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.

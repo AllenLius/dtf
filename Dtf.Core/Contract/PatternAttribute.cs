@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     [AttributeUsage(AttributeTargets.Interface)]
     public class PatternAttribute : Attribute

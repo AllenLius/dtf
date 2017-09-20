@@ -1,4 +1,4 @@
-﻿namespace Dta.Core
+﻿namespace Dtf.Core
 {
     using System.Xml.Serialization;
 

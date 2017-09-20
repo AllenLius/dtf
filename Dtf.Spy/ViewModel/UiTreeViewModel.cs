@@ -9,11 +9,11 @@ using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Dta.Core;
-using Dta.Spy.Model;
-using Dta.Endpoint.Win;
+using Dtf.Core;
+using Dtf.Spy.Model;
+using Dtf.Endpoint.Win;
 
-namespace Dta.Spy.ViewModel
+namespace Dtf.Spy.ViewModel
 {
     public class UiTreeViewModel : ViewModelBase
     {

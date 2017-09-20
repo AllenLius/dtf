@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Net;
-using Dta.Core;
+using Dtf.Core;
 
-namespace Dta.Server
+namespace Dtf.Server
 {
     public class JobProxy : IJobProxy
     {

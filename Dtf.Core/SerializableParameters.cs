@@ -5,7 +5,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class SerializableParameters : Dictionary<string, string>
     {

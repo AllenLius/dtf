@@ -7,7 +7,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public class DepotUiObject : UiObjectBase
     {

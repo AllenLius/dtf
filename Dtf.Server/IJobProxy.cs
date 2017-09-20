@@ -1,5 +1,5 @@
 ﻿
-namespace Dta.Server
+namespace Dtf.Server
 {
     public interface IJobProxy
     {

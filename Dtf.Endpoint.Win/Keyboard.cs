@@ -1,6 +1,6 @@
 ﻿
 using System.Threading;
-namespace Dta.Endpoint.Win
+namespace Dtf.Endpoint.Win
 {
     public class Keyboard
     {

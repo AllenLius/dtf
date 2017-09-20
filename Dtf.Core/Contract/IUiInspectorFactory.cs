@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ServiceModel;
 
-namespace Dta.Core
+namespace Dtf.Core
 {
     public interface IUiInspectorFactory
     {

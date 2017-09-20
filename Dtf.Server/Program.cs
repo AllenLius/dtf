@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.ServiceProcess;
 using System.Configuration.Install;
 
-namespace Dta.Server
+namespace Dtf.Server
 {
     class Program
     {
