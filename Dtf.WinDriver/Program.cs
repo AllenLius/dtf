@@ -8,15 +8,6 @@ namespace Dtf.WinDriver
 {
     class Program
     {
-        static void Test()
-        {
-            int calcProcId = System.Diagnostics.Process.Start("calc.exe", string.Empty).Id;
-            Thread.Sleep(1000);
-            string calcMainWnd = "<Equals><ProcessId>" + calcProcId + "</ProcessId></Equals>";
-            string calcOne = calcMainWnd + "<Equals><AutomationId>131</AutomationId></Equals>";
-
-        }
-
         static void Main(string[] args)
         {
             if (Environment.UserInteractive)

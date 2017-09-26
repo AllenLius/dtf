@@ -9,28 +9,31 @@
 
     public abstract class WinEndpoint : Endpoint
     {
-        private List<WeakReference<object>> _objectRefs = new List<WeakReference<object>>();
+        private List<WeakReference> m_objectRefs = new List<WeakReference>();
+        private IWinAutomation m_winAutomation;
+        private Dictionary<Type, object> m_objectMap = new Dictionary<Type, object>();
+
+        public WinEndpoint(IWinAutomation winAutomation)
+        {
+            m_winAutomation = winAutomation;
+            m_objectMap.Add(typeof(IAppFactory), new WinAppFactory(winAutomation));
+            m_objectMap.Add(typeof(IPatternFactory), new WinPatternFactory(winAutomation));
+            m_objectMap.Add(typeof(IUiInspectorFactory), new WinUiInspectorFactory(winAutomation));
+        }
 
         public override T QueryInterface<T>()
         {
-            object instance = null;
-
-            if (typeof(IAppFactory) == typeof(T))
-            {
-                instance = new WinAppFactory(WinAutomation);
-            }
-            else if (typeof(IPatternFactory) == typeof(T))
-            {
-                instance = new WinPatternFactory(WinAutomation);
-            }
-            else if (typeof(IUiInspectorFactory) == typeof(T))
-            {
-                instance = new WinUiInspectorFactory(WinAutomation);
-            }
-            _objectRefs.Add(new WeakReference<object>(WinAutomation));
-            return (T)instance;
+            object obj;
+            m_objectMap.TryGetValue(typeof(T), out obj);
+            return (T)obj;
         }
 
-        protected abstract IWinAutomation WinAutomation { get; }
+        protected IWinAutomation WinAutomation
+        {
+            get
+            {
+                return m_winAutomation;
+            }
+        }
     }
 }

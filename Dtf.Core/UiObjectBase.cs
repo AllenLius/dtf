@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,14 +12,15 @@ namespace Dtf.Core
     public abstract class UiObjectBase
     {
         public static readonly string[] CommonProperties;
-        private static readonly string Common_BoundingRectangle = "Common.BoundingRectangle";
-        private static readonly string Common_ControlType = "Common.ControlType";
+        protected static readonly string Common_BoundingRectangle = "Common.BoundingRectangle";
+        protected static readonly string Common_ControlType = "Common.ControlType";
+        protected static readonly string Common_ProcessName= "Common.ProcessName";
         public static readonly TimeSpan UITryInterval;
         private static readonly ManualResetEvent Waiter = new ManualResetEvent(false);
 
         static UiObjectBase()
         {
-            CommonProperties = new string[] { Common_BoundingRectangle, Common_ControlType };
+            CommonProperties = new string[] { Common_BoundingRectangle, Common_ControlType, Common_ProcessName };
             UITryInterval = TimeSpan.FromMilliseconds(500);
         }
 
@@ -29,24 +31,39 @@ namespace Dtf.Core
         /// <returns></returns>
         public virtual UiObjectBase FindFirst(string ui)
         {
-            Queue<Expression> expressionQueue = new Queue<Expression>();
-            Expression expression = ui;
-            if (expression is MultipleExpression)
+            return FindFirst(ui, TimeSpan.FromSeconds(50));
+        }
+
+        public virtual UiObjectBase FindFirst(string ui, TimeSpan timeout)
+        {
+            Console.WriteLine("Find: {0}.", ui);
+            DateTime start = DateTime.Now;
+            UiObjectBase t = null;
+            while (DateTime.Now - start < timeout)
             {
-                var multipleExpr = expression as MultipleExpression;
-                expressionQueue.EnqueueRange(multipleExpr.Expressions);
+                Queue<Expression> expressionQueue = new Queue<Expression>();
+                Expression expression = ui;
+                if (expression is MultipleExpression)
+                {
+                    var multipleExpr = expression as MultipleExpression;
+                    expressionQueue.EnqueueRange(multipleExpr.Expressions);
+                }
+                else
+                {
+                    expressionQueue.Enqueue(expression);
+                }
+                t = FindFirst(this, expressionQueue);
+                if (t != null)
+                {
+                    return t;
+                }
+                Waiter.WaitOne(UITryInterval);
             }
-            else
-            {
-                expressionQueue.Enqueue(expression);
-            }
-            return FindFirst(this, expressionQueue);
+            return null;
         }
 
         protected virtual UiObjectBase FindFirst(UiObjectBase uiParent, Queue<Expression> expressionQueue)
         {
-            Log.Default.Debug(string.Format("<<<expr queue count:{0}", expressionQueue.Count));
-            Log.Default.Trace("UIObjectBase/FindFirst");
             Queue<UiObjectBase> searchQueue = new Queue<UiObjectBase>();
             searchQueue.EnqueueRange(uiParent.Children);
 
@@ -56,6 +73,7 @@ namespace Dtf.Core
                 while (searchQueue.Count > 0)
                 {
                     UiObjectBase uiChild = searchQueue.Dequeue();
+                    //Log.Default.Trace(uiChild.ToString());
                     bool isMatch = Expression.IsMatch(expression, (s) => uiChild.Properties.Contains(s), (s) => uiChild[s]);
                     if (isMatch)
                     {
@@ -136,7 +154,7 @@ namespace Dtf.Core
         }
 
         public abstract Rect BoundingRectangle { get; }
-
+        public abstract string ProcessName { get; }
         public abstract IEnumerable<UiObjectBase> Children { get; }
 
         public abstract string ControlType { get; }
@@ -184,6 +202,10 @@ namespace Dtf.Core
                 else if (propertyName == Common_ControlType)
                 {
                     return ControlType;
+                }
+                else if (propertyName == Common_ProcessName)
+                {
+                    return ProcessName;
                 }
                 return null;
             }

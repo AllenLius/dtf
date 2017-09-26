@@ -9,7 +9,7 @@ namespace Dtf.Endpoint.Win
     using System.Diagnostics;
     using Dtf.Core;
     
-    internal class WinAppFactory : IAppFactory
+    public class WinAppFactory : IAppFactory
     {
         private IWinAutomation m_winAutomation;
 

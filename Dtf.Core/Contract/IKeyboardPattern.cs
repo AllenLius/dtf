@@ -1,5 +1,5 @@
 ﻿
-namespace Dtf.Endpoint.Win
+namespace Dtf.Core.Contract
 {
     public interface IKeyboardPattern
     {

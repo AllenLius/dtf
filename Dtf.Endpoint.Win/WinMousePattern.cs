@@ -20,7 +20,7 @@
 
         public void Click()
         {
-            m_winAutomation.MousePattern_Click(MouseButton.Left, m_ui);
+            m_winAutomation.MousePattern_ClickOn(MouseButton.Left, m_ui);
         }
 
         public void Click(MouseButton button)

@@ -11,61 +11,34 @@ namespace Dtf.Core
 {
     public class DepotUiObject : UiObjectBase
     {
-        //private XDocument m_xDoc;
         //private bool m_isVirtualRoot;
-        private DepotUiObject m_parent;
-        private List<UiObjectBase> m_children = new List<UiObjectBase>();
+        private DepotUiObject m_parent; // null if Root
+        private UiElementInfo m_uiElementInfo;
+        private DepotUiObject[] m_children;
 
-        private DepotUiObject(DepotUiObject parent, string name)
+        private DepotUiObject(DepotUiObject parent, UiElementInfo uiElementInfo)
         {
             m_parent = parent;
-            Name = name;
+            m_uiElementInfo = uiElementInfo;
         }
 
-        public static DepotUiObject Create(XmlReader xmlReader)
+        public static DepotUiObject Load(Stream stream)
         {
-
             //if (m_isVirtualRoot)
             //{
             //    return "Root";
             //}
             //return m_xDoc.Root.Attribute(UiInfoFactory.UiElementNameAttributeName).Value;
-            XDocument xDoc = XDocument.Load(xmlReader);
-            DepotUiObject root = new DepotUiObject(null, "Root");
-            CreateChildren(root, xDoc);
+            var uiInfoFactory = UiInfoFactory.Load(stream);
+            DepotUiObject root = new DepotUiObject(null, null);
+            Queue<UiElementInfo> uiElementInfoQueue = new Queue<UiElementInfo>();
+            uiElementInfoQueue.EnqueueRange(uiInfoFactory.UiElementInfos);
             return root;
         }
 
         public override string ToString()
         {
             return string.Format("{0}", Name);
-        }
-
-        private static void CreateChildren(DepotUiObject parent, XDocument xDoc)
-        {
-            var children = xDoc.Element(UiInfoFactory.UiElementsNodeName).Elements(UiInfoFactory.UiElementNodeName);
-            if (parent.Parent==null) // root
-            {
-                children = from e in children
-                           where
-                               e.Attribute(UiInfoFactory.UiElementParentAttributeName) == null
-                           select e;
-            }
-            else
-            {
-                children = from e in children
-                           where
-                               e.Attribute(UiInfoFactory.UiElementParentAttributeName) != null &&
-                               e.Attribute(UiInfoFactory.UiElementParentAttributeName).Value.Equals(parent.Name)
-                           select e;
-            }
-                               
-            foreach(var child in children)
-            {
-                var uiObj = new DepotUiObject(parent, child.Attribute(UiInfoFactory.UiElementNameAttributeName).Value);
-                parent.m_children.Add(uiObj);
-                CreateChildren(uiObj, xDoc);
-            }
         }
 
         public override Rect BoundingRectangle
@@ -80,6 +53,10 @@ namespace Dtf.Core
         {
             get
             {
+                if (m_children == null)
+                {
+                    m_children = m_uiElementInfo.Children.Select(ui => new DepotUiObject(this, ui)).ToArray();
+                }
                 return m_children;
             }
         }
@@ -93,7 +70,15 @@ namespace Dtf.Core
 
         public override UiObjectBase NextSibling
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                int index = Array.IndexOf(m_children, this) + 1;
+                if (index < m_children.Length)
+                {
+                    return m_children[index];
+                }
+                return null;
+            }
         }
 
         public override UiObjectBase Parent
@@ -106,7 +91,17 @@ namespace Dtf.Core
 
         public override UiObjectBase PreviousSibling
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                int index = Array.IndexOf(m_children, this) - 1;
+                if (index > 0)
+                {
+                    return m_children[index];
+                }
+                return null;
+            }
         }
+
+        public override string ProcessName => throw new NotImplementedException();
     }
 }

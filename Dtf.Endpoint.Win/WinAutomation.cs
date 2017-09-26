@@ -27,14 +27,13 @@ namespace Dtf.Endpoint.Win
             Process.GetProcessById(processId).Close();
         }
 
-        public byte[] Utility_CaptureUi()
-        {
-            throw new NotImplementedException();
-        }
-
         public void InvokePattern_Invoke(string ui)
         {
-            UiaUiObject target = (UiaUiObject)UiaUiObject.Root.FindFirst(ui);            
+            UiaUiObject target = (UiaUiObject)UiaUiObject.Root.FindFirst(ui);
+            if (target == null)
+            {
+                throw new Exception("UI not found!");
+            }
             var pattern = target.Current.GetCurrentPattern(InvokePatternIdentifiers.Pattern) as InvokePattern;
             pattern.Invoke();
         }
@@ -89,7 +88,7 @@ namespace Dtf.Endpoint.Win
             Mouse.Click(mouseButton);
         }
 
-        public void MousePattern_Click(MouseButton mouseButton, string ui)
+        public void MousePattern_ClickOn(MouseButton mouseButton, string ui)
         {
             UiaUiObject target = (UiaUiObject)UiaUiObject.Root.FindFirst(ui);
             target.Current.SetFocus();
@@ -114,5 +113,12 @@ namespace Dtf.Endpoint.Win
         {
             Mouse.Up(mouseButton);
         }
+
+        #region ResourceManager
+        public string ResourceManager_GetObject(string handlerType, string resourceKey)
+        {
+            return ResourceManager.GetObject(handlerType, resourceKey);
+        }
+        #endregion
     }
 }

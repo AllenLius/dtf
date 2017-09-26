@@ -9,14 +9,13 @@ namespace Dtf.Core
 {
     internal class  UiElementInfo
     {
-        UiElementInfo m_parent;
         string m_name;
         Expression m_condition;
         Type[] m_patterns;
+        List<UiElementInfo> m_children = new List<UiElementInfo>();
 
-        public UiElementInfo(UiElementInfo parent, string name, Type[] patterns, Expression condition)
+        public UiElementInfo(string name, Type[] patterns, Expression condition)
         {
-            m_parent = parent;
             m_name = name;
             m_patterns = patterns;
             m_condition = condition;
@@ -25,21 +24,27 @@ namespace Dtf.Core
         public string Name
         {
             get { return m_name; }
+            set { m_name = value; }
         }
 
         public Expression Condition
         {
             get { return m_condition; }
-        }
-
-        public UiElementInfo Parent
-        {
-            get { return m_parent; }
+            set { m_condition = value; }
         }
 
         public Type[] Patterns
         {
             get { return m_patterns; }
+            set { m_patterns = value; }
+        }
+
+        public IList<UiElementInfo> Children
+        {
+            get
+            {
+                return m_children;
+            }
         }
     }
 }

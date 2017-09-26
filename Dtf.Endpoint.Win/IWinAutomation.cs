@@ -41,13 +41,10 @@ namespace Dtf.Endpoint.Win
         //void UiObject_Wait(string ui, 
 
         [OperationContract]
-        byte[] Utility_CaptureUi();
-
-        [OperationContract]
         void MousePattern_Click(MouseButton mouseButton);
 
         [OperationContract]
-        void MousePattern_Click(MouseButton mouseButton, string ui);
+        void MousePattern_ClickOn(MouseButton mouseButton, string ui);
 
         [OperationContract]
         void MousePattern_Down(MouseButton mouseButton);
@@ -66,5 +63,16 @@ namespace Dtf.Endpoint.Win
 
         [OperationContract]
         void TreeWalker_Set(string filter);
+
+        #region IResourceManager
+        /// <summary>
+        /// Get resource used by UiElement 
+        /// </summary>
+        /// <param name="handlerType"></param>
+        /// <param name="resourceKey"></param>
+        /// <returns>String resource text or serialized object</returns>
+        [OperationContract]
+        string ResourceManager_GetObject(string handlerType, string resourceKey);
+        #endregion
     }
 }

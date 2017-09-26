@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<UiInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../Dtf.Core/UiInfo.xsd">
+  <Resources>
+    <Resource Name="CalcProcessName" HandlerType="ConstantResourceHandler" ResourceKey="Calculator"/>
+    <Resource Name="CalcProcessId" HandlerType="ProcessIdResourceHandler" ResourceKey="Calculator"/>
+    <Resource Name="Var" HandlerType="CallbackResourceHandler" ResourceKey="Var"/>
+  </Resources>
+  <UiElements>
+    <UiElement Name="Calculator">
+      <Expression>
+        <And>
+          <!--<Equals Property="Common.ProcessName">{CalcProcessName}</Equals>-->
+          <!--<Equals Property="ProcessId">{CalcProcessId}</Equals>-->
+          <Equals Property="Name">Calculator</Equals>
+          <Equals Property="Common.ControlType">Window</Equals>
+        </And>
+      </Expression>
+      <Children>
+        <UiElement Name="Zero" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Zero</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Result">
+          <Expression>
+            <And>
+              <Equals Property="AutomationId">CalculatorResults</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="One" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">One</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Two" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Two</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Three" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Three</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Four" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Four</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Five" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Five</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Six" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Six</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Seven" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Seven</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Eight" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Eight</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Nine" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Nine</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Ten" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Ten</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Plus" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Plus</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Minus" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Minus</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+        <UiElement Name="Equals" Patterns="Invoke">
+          <Expression>
+            <And>
+              <Equals Property="Name">Equals</Equals>
+              <Equals Property="ControlType">Button</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+      </Children>
+    </UiElement>    
+    <UiElement Name="Test">
+      <Expression>
+        <And>
+          <Equals Property="ControlType">Button</Equals>
+        </And>
+      </Expression>
+      <Children>
+        <UiElement Name="Zero">
+          <Expression>
+            <And>
+              <Equals Property="ControlType">a</Equals>
+            </And>
+          </Expression>
+        </UiElement>
+      </Children>
+    </UiElement>
+  </UiElements>
+</UiInfo>

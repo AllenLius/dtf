@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 using Dtf.Core;
+using System.Diagnostics;
 
 namespace Dtf.Endpoint.Win
 {
     public class UiaUiObject : UiObjectBase
     {
+        //public static readonly string[] BypassProcesses = new string[] { "devenv", "OUTLOOK", "lync" }; // TODO: read list from config file
         bool m_isVirtualRoot = false;
         AutomationElement m_automationElement;
         private const string SupportedPatternsName = "SupportedPatterns";
@@ -71,14 +73,46 @@ namespace Dtf.Endpoint.Win
                 }
                 else
                 {
-                    var automationElement = WalkerContext.TreeWalker.GetFirstChild(Current);
+                    // TODO: GetFirstChild return self?
+                    AutomationElement automationElement = null;
+                    try
+                    {
+                        automationElement = WalkerContext.TreeWalker.GetFirstChild(Current);
+                    }
+                    catch
+                    {
+                    }
                     while (automationElement != null)
                     {
-                        yield return new UiaUiObject(automationElement);
-                        automationElement = WalkerContext.TreeWalker.GetNextSibling(automationElement);
+                        var uiObject = new UiaUiObject(automationElement);
+                        bool bypass = false;
+                        //try
+                        //{
+                        //    if ((this.Parent as UiaUiObject).m_isVirtualRoot)
+                        //    {
+                        //        if (BypassProcesses.Contains(uiObject.ProcessName))
+                        //        {
+                        //            bypass = true;
+                        //        }
+                        //    }
+                        //}
+                        //catch
+                        //{
+                        //}
+                        if (!bypass)
+                        {
+                            yield return new UiaUiObject(automationElement);
+                        }
+                        try
+                        {
+                            automationElement = WalkerContext.TreeWalker.GetNextSibling(automationElement);
+                        }
+                        catch
+                        {
+                            break;
+                        }
                     }
                 }
-
             }
         }
 
@@ -99,6 +133,10 @@ namespace Dtf.Endpoint.Win
         {
             get
             {
+                if (Current == AutomationElement.RootElement)
+                {
+                    return UiaUiObject.Root;
+                }
                 var parentElement = WalkerContext.TreeWalker.GetParent(Current);
                 return new UiaUiObject(parentElement);
             }
@@ -158,65 +196,83 @@ namespace Dtf.Endpoint.Win
             }
         }
 
+        static int n = 1;
+        public override string ProcessName
+        {
+            get
+            {
+                Log.Default.Trace("ProcessName:{0}", n++);
+                var name = Process.GetProcessById(m_automationElement.Current.ProcessId).ProcessName;
+                return name;
+            }
+        }
+
         public override string this[string propertyName]
         {
             get
             {
-                if (CommonProperties.Contains(propertyName))
+                try
                 {
-                    return base[propertyName];
+                    if (CommonProperties.Contains(propertyName))
+                    {
+                        return base[propertyName];
+                    }
+                    if (propertyName == SupportedPatternsName)
+                    {
+                        return SupportedPatterns;
+                    }
+                    if (CommonProperties.Contains(propertyName))
+                    {
+                        return base[propertyName];
+                    }
+                    if (propertyName.Equals("AutomationId"))
+                    {
+                        return Current.Current.AutomationId;
+                    }
+                    if (propertyName.Equals("Name"))
+                    {
+                        return Current.Current.Name;
+                    }
+                    if (propertyName.Equals("ProcessId"))
+                    {
+                        return Current.Current.ProcessId.ToString();
+                    }
+                    if (propertyName.Equals("ClassName"))
+                    {
+                        return Current.Current.ClassName;
+                    }
+                    if (propertyName.Equals("ControlType"))
+                    {
+                        string controlType = Current.Current.ControlType.ProgrammaticName;
+                        int dotPos = controlType.IndexOf('.');
+                        return controlType.Substring(dotPos + 1);
+                    }
+                    if (propertyName.Equals("FrameworkId"))
+                    {
+                        return Current.Current.FrameworkId;
+                    }
+                    if (propertyName.Equals("IsContentElement"))
+                    {
+                        return Current.Current.IsContentElement.ToString();
+                    }
+                    if (propertyName.Equals("IsControlElement"))
+                    {
+                        return Current.Current.IsControlElement.ToString();
+                    }
+                    if (propertyName.Equals("IsPassword"))
+                    {
+                        return Current.Current.IsPassword.ToString();
+                    }
+                    if (propertyName.Equals("LocalizedControlType"))
+                    {
+                        return Current.Current.LocalizedControlType;
+                    }
+                    throw new ArgumentException();
                 }
-                if (propertyName == SupportedPatternsName)
+                catch
                 {
-                    return SupportedPatterns;
+                    return null;
                 }
-                if (CommonProperties.Contains(propertyName))
-                {
-                    return base[propertyName];
-                }
-                if (propertyName.Equals("AutomationId"))
-                {
-                    return Current.Current.AutomationId;
-                }
-                if (propertyName.Equals("Name"))
-                {
-                    return Current.Current.Name;
-                }
-                if (propertyName.Equals("ProcessId"))
-                {
-                    return Current.Current.ProcessId.ToString();
-                }
-                if (propertyName.Equals("ClassName"))
-                {
-                    return Current.Current.ClassName;
-                }
-                if (propertyName.Equals("ControlType"))
-                {
-                    string controlType = Current.Current.ControlType.ProgrammaticName;
-                    int dotPos = controlType.IndexOf('.');
-                    return controlType.Substring(dotPos+1);
-                }
-                if (propertyName.Equals("FrameworkId"))
-                {
-                    return Current.Current.FrameworkId;
-                }
-                if (propertyName.Equals("IsContentElement"))
-                {
-                    return Current.Current.IsContentElement.ToString();
-                }
-                if (propertyName.Equals("IsControlElement"))
-                {
-                    return Current.Current.IsControlElement.ToString();
-                }
-                if (propertyName.Equals("IsPassword"))
-                {
-                    return Current.Current.IsPassword.ToString();
-                }
-                if (propertyName.Equals("LocalizedControlType"))
-                {
-                    return Current.Current.LocalizedControlType;
-                }
-                throw new ArgumentException();
             }
         }
     }

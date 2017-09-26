@@ -4,7 +4,7 @@ namespace Dtf.Core
     [HandlerName("ConstantResourceHandler")]
     public class ConstantResourceHandler : IResourceHandler
     {
-        public object GetObject(string resourceKey)
+        public string GetObject(string resourceKey)
         {
             return resourceKey;
         }

@@ -14,7 +14,7 @@ namespace Dtf.Core
         /// </summary>
         /// <param name="resourceKey"></param>
         /// <returns></returns>
-        public object GetObject(string resourceKey)
+        public string GetObject(string resourceKey)
         {
             if (Callback == null)
             {

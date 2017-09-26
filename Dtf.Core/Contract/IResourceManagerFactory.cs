@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Dtf.Core
 {
-    public interface IUtility
+    public interface IResourceManagerFactory
     {
-        byte[] CaptureUi();
+        IResourceManager Create();
     }
 }

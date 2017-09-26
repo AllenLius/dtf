@@ -6,27 +6,21 @@
     using System.Text;
     using System.Threading.Tasks;
     using Dtf.Core;
+    using System.ServiceModel;
 
     public class RemoteWinEndpoint : WinEndpoint
     {
-        private IWinAutomation m_winAutomation;
-
-        private RemoteWinEndpoint(string uri)
+        private RemoteWinEndpoint(IWinAutomation winAutomation)
+            : base(winAutomation)
         {
-            m_winAutomation = Proxy.WSHttp.GetOrCreate<IWinAutomation>(uri);            
         }
 
         public static RemoteWinEndpoint Create(string uri)
         {
-            return new RemoteWinEndpoint(uri);
-        }
-
-        protected override IWinAutomation WinAutomation
-        {
-            get
-            {
-                return m_winAutomation;
-            }
+            BasicHttpBinding b = new BasicHttpBinding();
+            b.Security.Mode = BasicHttpSecurityMode.None;
+            IWinAutomation winAutomation = new Proxy(b).GetOrCreate<IWinAutomation>(uri);
+            return new RemoteWinEndpoint(winAutomation);
         }
     }
 }

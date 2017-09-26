@@ -13,9 +13,14 @@ namespace Dtf.Core
         /// </summary>
         /// <param name="resourceKey">Process Name</param>
         /// <returns>string of Process Id</returns>
-        public object GetObject(string resourceKey)
+        public string GetObject(string resourceKey)
         {
-            return Process.GetProcessesByName(resourceKey)[0].Id;
+            var processes = Process.GetProcessesByName(resourceKey);
+            if (processes.Length == 0)
+            {
+                return null;
+            }
+            return processes[0].Id.ToString();
         }
     }
 }

@@ -1,9 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="UiElement"
-    targetNamespace="http://tempuri.org/UiInfo.xsd"
-    elementFormDefault="qualified"
-    xmlns="http://tempuri.org/UiInfo.xsd"
-    xmlns:mstns="http://tempuri.org/UiInfo.xsd"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
   <!--UiInfo root-->
@@ -30,39 +26,51 @@
         <xs:element name="UiElements" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="UiElement" maxOccurs="unbounded">
-                <xs:complexType>
-                  <xs:sequence minOccurs="1" maxOccurs="1">
-                    <xs:choice>
-                      <xs:element ref="Expression" minOccurs="0"></xs:element>
-                    </xs:choice>
-                  </xs:sequence>
-                  <xs:attribute name="Name" type="xs:Name" use="required" />
-                  <xs:attribute name="Patterns" use="optional" />
-                  <xs:attribute name="Parent" type="xs:Name" use="optional" />
-                </xs:complexType>
-              </xs:element>
+              <xs:element ref="UiElement" minOccurs="0" maxOccurs="unbounded"></xs:element>
             </xs:sequence>
           </xs:complexType>
           <xs:key name="NameKey">
-            <xs:selector xpath="mstns:UiElement" />
+            <xs:selector xpath="UiElement" />
             <xs:field xpath="@Name" />
           </xs:key>
-          <xs:keyref name="ParentRef" refer="NameKey">
-            <xs:selector xpath="mstns:UiElement" />
-            <xs:field xpath="@Parent" />
-          </xs:keyref>
         </xs:element>
       </xs:sequence>
     </xs:complexType>
-    
+  </xs:element>
+
+  <!--UiElement-->
+  <xs:element name="UiElement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Expression" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+              <xs:choice>
+                <xs:element ref="Expression" minOccurs="0"></xs:element>
+              </xs:choice>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Children" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+              <xs:choice>
+                <xs:element ref="UiElement" minOccurs="0" maxOccurs="unbounded"></xs:element>
+              </xs:choice>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="Name" type="xs:Name" use="required" />
+      <xs:attribute name="Patterns" use="optional" />
+    </xs:complexType>
     <!--unique-->
     <xs:unique name="NameUnique">
-      <xs:selector xpath="mstns:*/*" />
+      <xs:selector xpath=".//*" />
       <xs:field xpath="@Name" />
     </xs:unique>
   </xs:element>
-
+  
   <xs:element name="Expression" abstract="true"></xs:element>
   <xs:element name="PropertyExpression" abstract="true" substitutionGroup="Expression"></xs:element>
   <xs:element name="GroupExpression" abstract="true" substitutionGroup="Expression">

@@ -25,7 +25,7 @@ namespace Dtf.Core
         /// <param name="type"></param>
         /// <param name="resourceKey">[HANDLER_TYPE]|[RESOURCE_KEY]</param>
         /// <returns></returns>
-        public static object GetObject(string handlerType, string resourceKey)
+        public static string GetObject(string handlerType, string resourceKey)
         {
             IResourceHandler handler = null;
             if (!_resourceHandlers.TryGetValue(handlerType, out handler))

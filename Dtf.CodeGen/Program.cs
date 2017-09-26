@@ -14,6 +14,7 @@ namespace Dtf.CodeGen
     using System.CodeDom.Compiler;
     using Dtf.Core;
     using System.Reflection;
+    //using System.Linq.Expressions;
 
     class Program
     {
@@ -23,24 +24,37 @@ namespace Dtf.CodeGen
         private const string ArgOut = "out";
         private const string ArgProvider = "provider";
 
+        private const string TypeNameResources = "Resources";
+        private const string TypeNameUiElements = "UiElements";
+        private const string VarNameEndpoint = "endpoint";
+        private const string FieldNameEndpoint = "m_" + VarNameEndpoint;
+        private const string FieldNameResources = "m_resources";
+        private const string FieldNameUi = "m_ui";
+        private static readonly string CtorParamNameEndpoint= VarNameEndpoint;
+        private const string PropertyNameEndpoint = "Endpoint";
+        private static readonly string PropertyNameResources = "Resources";
+        private static readonly string PropertyNameUi = "Ui";
+        private static readonly string VarNameParent = "parent";
+        private const string PatternFactoryMethodNameCreate = "Create";
+        private const string UiPropertyName = "Ui";
+        private static string PropertyNameFullExpression = nameof(UiElement.FullExpression);
         /// <summary>
         /// [Product]App.App
         /// </summary>
-        private const string UiElements = "UiElements";
-        private const string UiPropertyName = "Ui";
-        private const string UiFullPropertyName = "UiFull";
         private static readonly string MultipleExpressionName = Expression.GetExpressionName(typeof(MultipleExpression));
-        private const string EndpointPropertyName = "Endpoint";
         private const string EndpointMethodQueryInterfaceName = "QueryInterface";
         private const string IAppFactoryMethodCreateName = "Create";
         private const string IAppFactoryMethodCreateParamPathName = "Create";
-        private const string PatternFactoryCreateMethodName = "Create";
         private const string IAppFactoryMethodCreateParamNamedParametersName = "namedParameters";
-        private const string CtorParamEndpointName = "endpoint";
         //private const string UiFieldName = "m_ui";
-        private const string EndpointFieldName = "m_endpoint";
-        private static CodeParameterDeclarationExpression appFieldParameter;
-        private static CodeMemberField appField;
+
+        static string typeNameApp;
+        static CodeNamespace codeNs;
+        static CodeTypeDeclaration codeTypeApp;
+        static CodeTypeDeclaration codeTypeUiElements;
+        static string varNameApp;
+        static string fieldNameApp;
+        static HashSet<string> uiNames = new HashSet<string>();
 
         static void Main(string[] args)
         {
@@ -62,14 +76,13 @@ namespace Dtf.CodeGen
             nameSpace = namedArgs["namespace"].FirstOrDefault();
             outFile = namedArgs["out"].FirstOrDefault();
 
-            string className;
             if (namedArgs.ContainsKey("class"))
             {
-                className = namedArgs["class"].FirstOrDefault();
+                typeNameApp = namedArgs["class"].FirstOrDefault();
             }
             else
             {
-                className = Path.GetFileNameWithoutExtension(uiomFile);
+                typeNameApp = Path.GetFileNameWithoutExtension(uiomFile);
             }
 
             if (namedArgs.ContainsKey("provider"))
@@ -77,165 +90,134 @@ namespace Dtf.CodeGen
                 providers = namedArgs["provider"];
             }
 
-            string name = string.Format("{0}{1}", char.ToLower(className[0]), className.Length > 1 ? className.Substring(1) : string.Empty);
-            appField = new CodeMemberField(
-                    new CodeTypeReference(className),
-                    string.Format("m_{0}", name));
-
-            appFieldParameter = new CodeParameterDeclarationExpression(className, name);
-
-            CodeNamespace codeNs = new CodeNamespace(nameSpace);
-            CodeTypeDeclaration codeTypeUi = new CodeTypeDeclaration(className); // [Product]App
-            codeTypeUi.IsPartial = true;
-            CodeTypeDeclaration codeTypeUiElements = new CodeTypeDeclaration(UiElements);
-            CodeMemberField codeFieldUiEndpoint = new CodeMemberField(typeof(Endpoint), EndpointFieldName); // private Endpoint m_endpoint
-            CodeConstructor codeTypeUiCtor = new CodeConstructor(); // private [Product]App(Endpoint endpoint)
-
-            codeNs.Types.Add(codeTypeUi);
-            codeTypeUi.Members.Add(codeFieldUiEndpoint);
-            codeTypeUi.Members.Add(codeTypeUiCtor);
-            codeTypeUi.Members.Add(codeTypeUiElements);
+            UiInfoFactory factory = new UiInfoFactory(File.OpenRead(uiomFile)); // uiom information
             
-            var codeCtorParamEndpoint = new CodeParameterDeclarationExpression(
-                new CodeTypeReference(typeof(Endpoint)),
-                CtorParamEndpointName
-            );
-            codeTypeUiCtor.Attributes = MemberAttributes.Public;
-            codeTypeUiCtor.Parameters.Add(codeCtorParamEndpoint);
-            codeTypeUiCtor.Statements.Add(
+            // namespace [Namespace]
+            codeNs = new CodeNamespace(nameSpace);
+            CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+            codeNs.Imports.Add(new CodeNamespaceImport("System.IO"));
+            codeNs.Imports.Add(new CodeNamespaceImport(typeof(UiElement).Namespace)); // Dtf.Core
+
+            // class in codeNs
+            codeTypeApp = new CodeTypeDeclaration(typeNameApp) { Attributes = MemberAttributes.Final | MemberAttributes.Public, IsPartial = true }; // class [ClassName]
+            CodeTypeDeclaration codeTypeResources = new CodeTypeDeclaration(TypeNameResources) { Attributes = MemberAttributes.Public }; // class Resources
+            codeTypeUiElements = new CodeTypeDeclaration(TypeNameUiElements) { Attributes = MemberAttributes.Final | MemberAttributes.Public }; // class UiElements
+
+            // add types to codeNs
+            codeNs.Types.Add(codeTypeApp);
+            codeNs.Types.Add(codeTypeResources);
+            codeNs.Types.Add(codeTypeUiElements);
+
+            #region Init codeTypeApp 
+            CodeMemberField codeFieldEndpoint = new CodeMemberField(typeof(Endpoint), FieldNameEndpoint); // private Endpoint m_endpoint
+            CodeMemberField codeFieldResource = new CodeMemberField(new CodeTypeReference(TypeNameResources), FieldNameResources);
+            CodeMemberField codeFieldUi = new CodeMemberField(new CodeTypeReference(TypeNameUiElements), FieldNameUi);
+            CodeConstructor codeTypeCtorApp = new CodeConstructor() { Attributes = MemberAttributes.Final | MemberAttributes.Public }; // private [Product]App(Endpoint endpoint)
+            CodeMemberProperty codePropertyEndpoint = new CodeMemberProperty() { Name = PropertyNameEndpoint, Attributes = MemberAttributes.Final | MemberAttributes.Public, Type = new CodeTypeReference(typeof(Endpoint)), HasGet = true };
+            CodeMemberProperty codePropertyResources = new CodeMemberProperty() { Name = PropertyNameResources, Attributes = MemberAttributes.Final | MemberAttributes.Public, Type = new CodeTypeReference(TypeNameResources), HasGet = true };
+            CodeMemberProperty codePropertyUi = new CodeMemberProperty() { Name = PropertyNameUi, Attributes = MemberAttributes.Final | MemberAttributes.Public, Type = new CodeTypeReference(TypeNameUiElements), HasGet = true };
+            codeTypeApp.Members.Add(codeFieldEndpoint); // add m_endpoint field
+            codeTypeApp.Members.Add(codeFieldResource);
+            codeTypeApp.Members.Add(codeFieldUi);
+            codeTypeApp.Members.Add(codeTypeCtorApp); // add ctor
+            codeTypeApp.Members.Add(codePropertyEndpoint); // add Endpoint property
+            codeTypeApp.Members.Add(codePropertyResources); // add Resources property
+            codeTypeApp.Members.Add(codePropertyUi); // add Ui property
+
+            // ctor
+            codeTypeCtorApp.Parameters.Add( // add parameter to ctor
+                new CodeParameterDeclarationExpression(typeof(Endpoint), CtorParamNameEndpoint));
+            codeTypeCtorApp.Statements.Add( // m_endpoint = endpoint
                 new CodeAssignStatement(
-                    new CodeVariableReferenceExpression(EndpointFieldName),
-                    new CodeVariableReferenceExpression(CtorParamEndpointName)
-                )
-            );
+                    new CodeVariableReferenceExpression(FieldNameEndpoint),
+                    new CodeVariableReferenceExpression(CtorParamNameEndpoint)));
+            codeTypeCtorApp.Statements.Add( // m_resources = new Resources(this);
+                new CodeAssignStatement(
+                    new CodeVariableReferenceExpression(FieldNameResources),
+                    new CodeObjectCreateExpression(TypeNameResources, new CodeThisReferenceExpression())));
+            codeTypeCtorApp.Statements.Add( // m_ui = new UiElements(this);
+                new CodeAssignStatement(
+                    new CodeVariableReferenceExpression(FieldNameUi),
+                    new CodeObjectCreateExpression(TypeNameUiElements, new CodeThisReferenceExpression())));
 
-            CodeMemberProperty endpointProperty = new CodeMemberProperty();
-            endpointProperty.Name = EndpointPropertyName;
-            endpointProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            endpointProperty.Type = new CodeTypeReference(typeof(Endpoint));
-            endpointProperty.HasGet = true;
-            endpointProperty.GetStatements.Add(
-                new CodeMethodReturnStatement(new CodeVariableReferenceExpression(EndpointFieldName)));
-            codeTypeUi.Members.Add(endpointProperty);            
+            // codePropertyEndpoint
+            codePropertyEndpoint.GetStatements.Add(
+                new CodeMethodReturnStatement(
+                    new CodeVariableReferenceExpression(FieldNameEndpoint)));
 
-            var invokeQueryInterface = new CodeMethodInvokeExpression(
-                new CodeMethodReferenceExpression(
-                    new CodeVariableReferenceExpression(EndpointPropertyName),
-                    EndpointMethodQueryInterfaceName
-                )
-            );
+            // codePropertyResources
+            codePropertyResources.GetStatements.Add(
+                new CodeMethodReturnStatement(
+                    new CodeVariableReferenceExpression(FieldNameResources)));
 
-            var invokeQueryInterfaceCreate = new CodeMethodInvokeExpression(
-                new CodeMethodReferenceExpression(
-                    invokeQueryInterface,
-                    IAppFactoryMethodCreateName
-                ),
-                new CodeParameterDeclarationExpression(
-                    new CodeTypeReference(typeof(string)),
-                    IAppFactoryMethodCreateParamNamedParametersName
-                )
-            );
+            // codePropertyUi
+            codePropertyUi.GetStatements.Add(
+                new CodeMethodReturnStatement(
+                    new CodeVariableReferenceExpression(FieldNameUi)));
+            #endregion
 
-            UiInfoFactory factory = new UiInfoFactory(File.OpenRead(uiomFile));
+            // define field of [appClassName]
+            varNameApp = string.Format("{0}{1}", char.ToLower(typeNameApp[0]), typeNameApp.Length > 1 ? typeNameApp.Substring(1) : string.Empty);
+            fieldNameApp = "m_" + varNameApp;
+
+            #region Init codeTypeResources
+            // field
+            codeTypeResources.Members.Add(new CodeMemberField(typeNameApp, fieldNameApp));
+
+            // ctor
+            CodeConstructor codeCtorResources = new CodeConstructor() { Attributes = MemberAttributes.Final | MemberAttributes.Public };
+            codeTypeResources.Members.Add(codeCtorResources);
+            codeCtorResources.Parameters.Add(new CodeParameterDeclarationExpression(typeNameApp, varNameApp));
+            codeCtorResources.Statements.Add(
+                new CodeAssignStatement(
+                    new CodeVariableReferenceExpression(fieldNameApp),
+                    new CodeVariableReferenceExpression(varNameApp)));
+            //codeCtorResources.Statements.Add( // m_resourceManager = [fieldNameApp].Endpoint.QueryInterface<IResourceManagerFactory>().Create();
+            //    new CodeAssignStatement(
+            //        new CodeVariableReferenceExpression(FieldNameResourceManager), // m_resourceManager
+            //        new CodeMethodInvokeExpression( // Create()
+            //            new CodeMethodReferenceExpression( // QueryInterface<IResourceManagerFactory>()
+            //                new CodeMethodInvokeExpression(
+            //                    new CodeMethodReferenceExpression(
+            //                        new CodeFieldReferenceExpression( // Endpoint
+            //                            new CodeVariableReferenceExpression(fieldNameApp), // fieldNameApp
+            //                            PropertyNameEndpoint), // [fieldNameApp]
+            //                        EndpointMethodQueryInterfaceName, // QueryInterface
+            //                        new CodeTypeReference(typeof(IResourceManagerFactory)))), // generic type parameter
+            //            PatternFactoryMethodNameCreate))));
 
             // add resource
-            foreach(var res in factory.ResourceInfos)
+            foreach (var res in factory.ResourceInfos)
             {
-                CodeMemberProperty codePropertyRes = new CodeMemberProperty();
-                codePropertyRes.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                codePropertyRes.Name = res.Name;
-                codePropertyRes.Type = new CodeTypeReference(typeof(object));
-                codePropertyRes.GetStatements.Add(
+                CodeMemberProperty codePropertyResource = new CodeMemberProperty() { Attributes = MemberAttributes.Final | MemberAttributes.Public, Name = res.Name, Type = new CodeTypeReference(typeof(object)) };
+                codePropertyResource.GetStatements.Add(
                     new CodeMethodReturnStatement(
                         new CodeMethodInvokeExpression(
                             new CodeMethodReferenceExpression(
-                                new CodeTypeReferenceExpression(typeof(ResourceManager)), "GetObject"
-                            ),
-                            new CodePrimitiveExpression(res.HandlerType), new CodePrimitiveExpression(res.ResourceKey)
-                        )
-                    )
-                );
-                codeTypeUi.Members.Add(codePropertyRes);
+                                new CodeTypeReferenceExpression(typeof(ResourceManager)),
+                                nameof(ResourceManager.GetObject)),
+                            new CodePrimitiveExpression(res.HandlerType), new CodePrimitiveExpression(res.ResourceKey))));
+                codeTypeResources.Members.Add(codePropertyResource); // add to Resources type
             }
+            #endregion
+
+            #region Init codeTypeUiElements
+            codeTypeUiElements.Members.Add(new CodeMemberField(typeNameApp, fieldNameApp));
+            CodeConstructor codeTypeCtorUiElements = new CodeConstructor() { Attributes = MemberAttributes.Final | MemberAttributes.Public };
+            codeTypeUiElements.Members.Add(codeTypeCtorUiElements);
+            codeTypeCtorUiElements.Parameters.Add(new CodeParameterDeclarationExpression(typeNameApp, varNameApp));
+            codeTypeCtorUiElements.Statements.Add(
+                new CodeAssignStatement(
+                    new CodeVariableReferenceExpression(fieldNameApp),
+                    new CodeVariableReferenceExpression(varNameApp)));
+            #endregion
 
             // add UI class and property
             foreach (var uiInfo in factory.UiElementInfos)
             {
-                CodeTypeDeclaration codeTypeUiElement = new CodeTypeDeclaration()
-                {
-                    Name = uiInfo.Name
-                };
-                CodeConstructor codeTypeUiElementCtor = new CodeConstructor()
-                {
-                    Attributes = MemberAttributes.Public
-                };
-                codeTypeUiElementCtor.Parameters.Add(appFieldParameter);
-                codeTypeUiElementCtor.Statements.Add(
-                    new CodeAssignStatement(
-                        new CodeVariableReferenceExpression(appField.Name),
-                        new CodeVariableReferenceExpression(appFieldParameter.Name)
-                    )
-                );
-                CodeMemberProperty codePropertyUiElement = new CodeMemberProperty();
-
-                codeTypeUiElements.Members.Add(codeTypeUiElement); // add UI type
-                codeTypeUiElement.Members.Add(appField);
-                codeTypeUiElement.Members.Add(codeTypeUiElementCtor);
-                codeTypeUi.Members.Add(codePropertyUiElement); // add UI property
-
-                codePropertyUiElement.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                codePropertyUiElement.Type = new CodeTypeReference(codeTypeUiElements.Name + "." + uiInfo.Name);
-                codePropertyUiElement.Name = uiInfo.Name;
-                codePropertyUiElement.GetStatements.Add(
-                    new CodeMethodReturnStatement(
-                        new CodeObjectCreateExpression(codePropertyUiElement.Type, new CodeThisReferenceExpression())
-                    )
-                );
-
-                // add and implement IUiInspector
-                ImplementInterface(codeTypeUiElement, typeof(IUiInspectorFactory), typeof(IUiInspector), null);
-
-                // add click
-                ImplementInterface(codeTypeUiElement, typeof(IPatternFactory), typeof(IMousePattern), typeof(IMousePattern));
-
-                foreach (var type in uiInfo.Patterns)
-                {
-                    ImplementInterface(codeTypeUiElement, typeof(IPatternFactory), type, type);
-                }
-
-                // add Ui property
-                CodeMemberProperty uiProperty = new CodeMemberProperty();
-                codeTypeUiElement.Members.Add(uiProperty);
-                uiProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                uiProperty.Type = new CodeTypeReference(typeof(Expression));
-                uiProperty.Name = UiPropertyName;
-                uiProperty.GetStatements.Add(new CodeMethodReturnStatement(new CodeSnippetExpression(ParserValue(uiInfo.Condition.ToString()))));
-                
-                // add UiFull property
-                CodeMemberProperty uiFullProperty = new CodeMemberProperty();
-                codeTypeUiElement.Members.Add(uiFullProperty);
-                uiFullProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                uiFullProperty.Type = new CodeTypeReference(typeof(Expression));
-                uiFullProperty.Name = UiFullPropertyName;
-                string uiFull = string.Empty;
-                var uiInfoT = uiInfo;
-                do
-                {
-                    uiFull = uiInfoT.Condition.ToString() + uiFull;
-                    uiInfoT = uiInfoT.Parent;
-                }
-                while (uiInfoT != null);
-                uiFull = "<" + MultipleExpressionName + ">" + uiFull + "</" + MultipleExpressionName + ">";
-                uiFull = ParserValue(uiFull);
-                uiFullProperty.GetStatements.Add(new CodeMethodReturnStatement(new CodeSnippetExpression(uiFull)));
+                AddUiElement(codeTypeUiElements, uiInfo);
             }
 
-            //UiInfoFactory.
-
-            CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-            codeNs.Imports.Add(new CodeNamespaceImport("System.IO"));
-            codeNs.Imports.Add(new CodeNamespaceImport("Dtf.Core"));
-            
             CSharpCodeProvider cs = new CSharpCodeProvider();
             StringWriter sw = new StringWriter();
                         
@@ -247,15 +229,76 @@ namespace Dtf.CodeGen
         }
 
         /// <summary>
+        /// Add UiElement class and instance
+        /// </summary>
+        /// <param name="uiInfo"></param>
+        private static void AddUiElement(CodeTypeDeclaration targetType, UiElementInfo uiInfo)
+        {
+            string uiName = uiInfo.Name;
+            int n = 2;
+            while (uiNames.Contains(uiName))
+            {
+                uiName = uiInfo.Name + n.ToString();
+                n++;
+            }
+            uiNames.Add(uiName);
+
+            // add UiElement type
+            CodeTypeDeclaration codeTypeUiElement = new CodeTypeDeclaration() { Name = uiName };
+            codeNs.Types.Add(codeTypeUiElement); // add UI to namespace
+            CodeConstructor codeCtorUiElement = new CodeConstructor() { Attributes = MemberAttributes.Final | MemberAttributes.Public };
+            codeTypeUiElement.Members.Add(new CodeMemberField(typeNameApp, fieldNameApp));
+            codeTypeUiElement.Members.Add(codeCtorUiElement);
+            codeCtorUiElement.Parameters.Add(new CodeParameterDeclarationExpression(typeof(UiElement), VarNameParent));
+            codeCtorUiElement.Parameters.Add(new CodeParameterDeclarationExpression(typeNameApp, varNameApp));
+            codeCtorUiElement.BaseConstructorArgs.Add(new CodeSnippetExpression(GetFormattedExpressionString(uiInfo.Condition.ToString())));
+            codeCtorUiElement.BaseConstructorArgs.Add(new CodeVariableReferenceExpression(VarNameParent));
+            codeCtorUiElement.Statements.Add(
+                new CodeAssignStatement(
+                    new CodeVariableReferenceExpression(fieldNameApp),
+                    new CodeVariableReferenceExpression(varNameApp)));
+
+            // inherit UiElement
+            codeTypeUiElement.BaseTypes.Add(new CodeTypeReference(typeof(UiElement)));
+
+            // add and implement IUiInspector
+            ImplementInterface(codeTypeUiElement, typeof(IUiInspectorFactory), typeof(IUiInspector), null);
+
+            // add click
+            ImplementInterface(codeTypeUiElement, typeof(IPatternFactory), typeof(IMousePattern), typeof(IMousePattern));
+
+            foreach (var type in uiInfo.Patterns)
+            {
+                ImplementInterface(codeTypeUiElement, typeof(IPatternFactory), type, type);
+            }
+
+            // add UI propety to UiElements
+            CodeMemberProperty codePropertyUiElement = new CodeMemberProperty() { Attributes = MemberAttributes.Final | MemberAttributes.Public, Name = uiInfo.Name, Type = new CodeTypeReference(uiName) };
+            targetType.Members.Add(codePropertyUiElement);
+            CodeExpression uiElementParent = targetType.Name.Equals(TypeNameUiElements) ? new CodePrimitiveExpression(null) as CodeExpression : new CodeThisReferenceExpression() as CodeExpression;
+            codePropertyUiElement.GetStatements.Add(
+                new CodeMethodReturnStatement(
+                    new CodeObjectCreateExpression(codePropertyUiElement.Type, uiElementParent, new CodeVariableReferenceExpression(fieldNameApp))
+                )
+            );
+
+            // add children
+            foreach(var child in uiInfo.Children)
+            {
+                AddUiElement(codeTypeUiElement, child);
+            }
+        }
+
+        /// <summary>
         /// Add interface implement of type
         /// </summary>
-        /// <param name="codeTypeUi">Type to implement</param>
+        /// <param name="codeType">Type to implement</param>
         /// <param name="queryType">Template type of QueryInterface</param>
         /// <param name="implementType">Interface to implement</param>
         /// <param name="createType">Template type of Create</param>
-        static void ImplementInterface(CodeTypeDeclaration codeTypeUi, Type queryType, Type implementType, Type createType)
+        static void ImplementInterface(CodeTypeDeclaration codeType, Type queryType, Type implementType, Type createType)
         {
-            codeTypeUi.BaseTypes.Add(implementType);
+            codeType.BaseTypes.Add(implementType);
             foreach (var memberInfo in implementType.GetMembers())
             {
                 if (memberInfo is MethodInfo)
@@ -265,17 +308,17 @@ namespace Dtf.CodeGen
                     CodeMemberMethod codeMethod = new CodeMemberMethod()
                     {
                         Name = methodName,
-                        Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                        Attributes = MemberAttributes.Final | MemberAttributes.Public,
                         ReturnType = new CodeTypeReference(methodInfo.ReturnType)
                     };
-                    codeTypeUi.Members.Add(codeMethod);
+                    codeType.Members.Add(codeMethod);
                     foreach (var p in methodInfo.GetParameters())
                     {
                         CodeParameterDeclarationExpression parameter = new CodeParameterDeclarationExpression(new CodeTypeReference(p.ParameterType), p.Name);
                         codeMethod.Parameters.Add(parameter);
                     }
 
-                    CodePropertyReferenceExpression endpointField = new CodePropertyReferenceExpression(new CodeVariableReferenceExpression(appField.Name), EndpointPropertyName);
+                    CodePropertyReferenceExpression endpointField = new CodePropertyReferenceExpression(new CodeVariableReferenceExpression(fieldNameApp), PropertyNameEndpoint);
                     CodeMethodInvokeExpression queryMethod = new CodeMethodInvokeExpression(
                         new CodeMethodReferenceExpression(
                             endpointField,
@@ -284,13 +327,13 @@ namespace Dtf.CodeGen
 
                     CodeMethodReturnStatement queryReturnStatment = new CodeMethodReturnStatement(queryMethod);
                     CodeMethodReferenceExpression codeMethodCreateRef = new CodeMethodReferenceExpression(queryReturnStatment.Expression,
-                            PatternFactoryCreateMethodName);
+                            PatternFactoryMethodNameCreate);
                     if (createType != null)
                     {
                         codeMethodCreateRef.TypeArguments.Add(new CodeTypeReference(createType));
                     }
                     CodeMethodInvokeExpression createMethod = new CodeMethodInvokeExpression(codeMethodCreateRef,
-                        new CodeVariableReferenceExpression(UiFullPropertyName));
+                        new CodeVariableReferenceExpression(PropertyNameFullExpression));
 
 
                     List<CodeVariableReferenceExpression> varList = new List<CodeVariableReferenceExpression>();
@@ -323,7 +366,7 @@ namespace Dtf.CodeGen
         /// </summary>
         /// <param name="value">{{=>{; Hi {Res}=>"Hi " + Res; Hi {{res}=> Hi {res}; Hi {{{res}=> "Hi {" +str</param>
         /// <returns>Formated string</returns>
-        static string ParserValue(string value)
+        static string GetFormattedExpressionString(string value)
         {
             value = value.Replace("\"", "\\\"");
             StringBuilder result = new StringBuilder();
@@ -348,7 +391,7 @@ namespace Dtf.CodeGen
                             throw new FormatException();
                         }
                         //Append formatted str
-                        result.Append(string.Format("\" + {0}.{1}.ToString() + \"", appField.Name, refId.ToString()));
+                        result.Append(string.Format("\" + {0}.{1}.{2} + \"", varNameApp, PropertyNameResources, refId.ToString()));
                         refId.Clear();
                         hasStartToken = false;
                         continue;

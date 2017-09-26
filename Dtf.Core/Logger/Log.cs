@@ -11,7 +11,7 @@ namespace Dtf.Core
     {
         private string m_name;
         private List<ILogAppender> _logAppenders = new List<ILogAppender>();
-        private static Log _defaultLog = new Log("Default");
+        private static Log g_defaultLog = null;
 
         public Log(string name)
         {
@@ -98,7 +98,12 @@ namespace Dtf.Core
         {
             get
             {
-                return _defaultLog;
+                if (g_defaultLog == null)
+                {
+                    g_defaultLog = new Log("Default");
+                    g_defaultLog.AddAppender(new ConsoleLogAppender());
+                }
+                return g_defaultLog;
             }
         }
     }

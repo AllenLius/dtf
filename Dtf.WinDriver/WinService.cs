@@ -27,7 +27,7 @@ namespace Dtf.WinDriver
         {
             string hostName = Environment.MachineName;
             string server = ConfigurationManager.AppSettings["Server"];
-            Uri uri = new Uri(new Uri(server), hostName);
+            Uri uri = new Uri(new Uri(server), hostName + "/");
             m_jobDispatcher.Start(uri);
         }
 

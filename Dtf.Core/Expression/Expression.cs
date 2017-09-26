@@ -26,8 +26,10 @@ namespace Dtf.Core
         public static implicit operator string(Expression expression)
         {
             StringBuilder sb = new StringBuilder();
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.OmitXmlDeclaration = true;
+            XmlWriterSettings settings = new XmlWriterSettings()
+            {
+                OmitXmlDeclaration = true
+            };
             XmlWriter writer = XmlWriter.Create(sb, settings);
             Type type = expression.GetType();
             expression.WriteXml(writer);

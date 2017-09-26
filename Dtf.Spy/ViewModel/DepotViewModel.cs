@@ -12,6 +12,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Dtf.Core;
 using Dtf.Spy.Model;
+using System.IO;
 
 namespace Dtf.Spy.ViewModel
 {
@@ -27,8 +28,8 @@ namespace Dtf.Spy.ViewModel
 
         public void Load(string file)
         {
-            XmlReader xmlReader = XmlReader.Create(file);
-            var uiRoot = DepotUiObject.Create(xmlReader);
+            var fileStream = File.Open(file, FileMode.Create);
+            var uiRoot = DepotUiObject.Load(fileStream);
             var nodes = new ObservableCollection<UiTreeNode>();
             foreach (var child in uiRoot.Children)
             {

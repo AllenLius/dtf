@@ -17,9 +17,9 @@
             _instance = new LocalWinEndpoint();
         }
 
-        private LocalWinEndpoint()
+        private LocalWinEndpoint() :
+            base(new WinAutomation())
         {
-            m_winAutomation = new WinAutomation();
         }
 
         public static LocalWinEndpoint Instance
@@ -27,14 +27,6 @@
             get
             {
                 return _instance;
-            }
-        }
-
-        protected override IWinAutomation WinAutomation
-        {
-            get
-            {
-                return m_winAutomation;
             }
         }
     }

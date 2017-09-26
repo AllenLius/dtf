@@ -3,6 +3,6 @@ namespace Dtf.Core
 {
     public interface IResourceHandler
     {
-        object GetObject(string resourceKey);
+        string GetObject(string resourceKey);
     }
 }

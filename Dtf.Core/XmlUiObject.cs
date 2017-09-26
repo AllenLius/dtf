@@ -76,6 +76,8 @@ namespace Dtf.Core
             }
         }
 
+        public override string ProcessName => throw new NotImplementedException();
+
         public override string this[string propertyName]
         {
             get

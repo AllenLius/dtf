@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>$(SolutionDir)bin\Debug\</OutputPath>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,13 +29,23 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\Dtf.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Contract\IAppFactory.cs" />
+    <Compile Include="Contract\IResourceManagerFactory.cs" />
+    <Compile Include="Contract\IResourceManager.cs" />
     <Compile Include="Contract\IPatternFactory.cs" />
     <Compile Include="Contract\ITreeWalkerContextFactory.cs" />
     <Compile Include="Contract\IUiInspector.cs" />
     <Compile Include="Contract\IUiInspectorFactory.cs" />
-    <Compile Include="Contract\IUtility.cs" />
     <Compile Include="Contract\Endpoint.cs" />
     <Compile Include="Contract\IApp.cs" />
     <Compile Include="Contract\IInvokePattern.cs" />
@@ -46,7 +56,11 @@
     <Compile Include="Contract\PatternAttribute.cs" />
     <Compile Include="Expression\MultipleExpression.cs" />
     <Compile Include="Localization\CallbackResourceHandler.cs" />
+    <Compile Include="Localization\ConstrantResourceHandler.cs" />
+    <Compile Include="Localization\HandlerNameAttribute.cs" />
+    <Compile Include="Localization\IResourceHandler.cs" />
     <Compile Include="Localization\ProcessIdResourceHandler.cs" />
+    <Compile Include="Localization\ResourceManager.cs" />
     <Compile Include="Logger\EventLogAppender.cs" />
     <Compile Include="Proxy.cs" />
     <Compile Include="DepotUiObject.cs" />
@@ -68,6 +82,7 @@
     <Compile Include="Soap\SoapMessage.cs" />
     <Compile Include="Soap\SoapReturnMessage.cs" />
     <Compile Include="Soap\SoapSerializeHelper.cs" />
+    <Compile Include="UiElement.cs" />
     <Compile Include="UiElementInfo.cs" />
     <Compile Include="Validate.cs" />
     <Compile Include="WorkItem.cs" />
@@ -90,10 +105,6 @@
     <Compile Include="Extension\QueueExtension.cs" />
     <Compile Include="Extension\StreamExtension.cs" />
     <Compile Include="IUiNavigable.cs" />
-    <Compile Include="Localization\ConstrantResourceHandler.cs" />
-    <Compile Include="Localization\HandlerNameAttribute.cs" />
-    <Compile Include="Localization\IResourceHandler.cs" />
-    <Compile Include="Localization\ResourceManager.cs" />
     <Compile Include="Logger\ILogAppender.cs" />
     <Compile Include="Logger\Log.cs" />
     <Compile Include="Logger\LogLevel.cs" />
