@@ -10,7 +10,7 @@
       <Expression>
         <And>
           <!--<Equals Property="Common.ProcessName">{CalcProcessName}</Equals>-->
-          <!--<Equals Property="ProcessId">{CalcProcessId}</Equals>-->
+          <Equals Property="ProcessId">{CalcProcessId}</Equals>
           <Equals Property="Name">Calculator</Equals>
           <Equals Property="Common.ControlType">Window</Equals>
         </And>

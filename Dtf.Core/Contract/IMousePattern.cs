@@ -12,6 +12,7 @@ namespace Dtf.Core
         Right
     }
 
+    [Pattern("Mouse")]
     public interface IMousePattern
     {
         void Click();

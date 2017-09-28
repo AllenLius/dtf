@@ -29,7 +29,7 @@ namespace Dtf.Endpoint.Win
 
         public void InvokePattern_Invoke(string ui)
         {
-            UiaUiObject target = (UiaUiObject)UiaUiObject.Root.FindFirst(ui);
+            var target = UiaUiObject.Root.FindFirst(ui) as UiaUiObject;
             if (target == null)
             {
                 throw new Exception("UI not found!");
@@ -38,9 +38,15 @@ namespace Dtf.Endpoint.Win
             pattern.Invoke();
         }
 
-        public void TextPattern_SetText(string ui, string text)
+        public void ValuePattern_SetValue(string ui, string value)
         {
-            throw new NotImplementedException();
+            var target = UiaUiObject.Root.FindFirst(ui) as UiaUiObject;
+            if (target == null)
+            {
+                throw new Exception("UI not found!");
+            }
+            var pattern = target.Current.GetCurrentPattern(ValuePatternIdentifiers.Pattern) as ValuePattern;
+            pattern.SetValue(value);
         }
 
         public void TreeWalker_Set(string filter)
@@ -67,13 +73,13 @@ namespace Dtf.Endpoint.Win
 
         public string UiObject_GetUi(string ui)
         {
-            UiaUiObject target = (UiaUiObject)UiaUiObject.Root.FindFirst(ui);
+            var target = UiaUiObject.Root.FindFirst(ui) as UiaUiObject;
             return target.GetUI();
         }
         
         public Rect UiObject_GetRect(string ui)
         {
-            UiaUiObject target = (UiaUiObject)UiaUiObject.Root.FindFirst(ui);
+            var target = UiaUiObject.Root.FindFirst(ui) as UiaUiObject;
             var rect = target.BoundingRectangle;
             return rect;
         }
@@ -90,7 +96,7 @@ namespace Dtf.Endpoint.Win
 
         public void MousePattern_ClickOn(MouseButton mouseButton, string ui)
         {
-            UiaUiObject target = (UiaUiObject)UiaUiObject.Root.FindFirst(ui);
+            var target = (UiaUiObject)UiaUiObject.Root.FindFirst(ui);
             target.Current.SetFocus();
             var rect = target.BoundingRectangle;
             double x = rect.X + rect.Width / 2;

@@ -8,17 +8,20 @@ namespace Dtf.Endpoint.Win
 {
     using Dtf.Core;
 
-    internal class WinTextPattern : ITextPattern
+    internal class WinValuePattern : IValuePattern
     {
-        private Endpoint m_endpoint;
+        private IWinAutomation m_winAutomation;
+        private Expression m_ui;
 
-        public WinTextPattern(Endpoint endpoint)
+        public WinValuePattern(IWinAutomation winAutomation, Expression ui) 
         {
-            m_endpoint = endpoint;
+            m_winAutomation = winAutomation;
+            m_ui = ui;
         }
 
-        public void SetText(string text)
+        public void SetValue(string value)
         {
+            m_winAutomation.ValuePattern_SetValue(m_ui, value);
         }
     }
 }

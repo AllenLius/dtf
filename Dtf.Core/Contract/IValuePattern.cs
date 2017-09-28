@@ -7,9 +7,9 @@ using System.ServiceModel;
 
 namespace Dtf.Core
 {
-    [Pattern("Text")]
-    public interface ITextPattern
+    [Pattern("Value")]
+    public interface IValuePattern
     {
-        void SetText(string text);
+        void SetValue(string value);
     }
 }

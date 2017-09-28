@@ -10,9 +10,9 @@ namespace Dtf.Endpoint.Win
 
     internal class WinTreeWalkerContextFactory : ITreeWalkerContextFactory
     {
-        private Endpoint m_endpoint;
+        private Core.IEndpoint m_endpoint;
 
-        public WinTreeWalkerContextFactory(Endpoint endpoint)
+        public WinTreeWalkerContextFactory(Core.IEndpoint endpoint)
         {
             m_endpoint = endpoint;
         }

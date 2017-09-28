@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Dtf.Core;
 
-namespace UITest
+namespace Sandbox 
 {
     public static class WinActivities
     {

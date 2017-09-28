@@ -27,6 +27,10 @@
             {
                 instance = new WinMousePattern(m_winAutomation, ui);
             }
+            else if (typeof(T) == typeof(IValuePattern))
+            {
+                instance = new WinValuePattern(m_winAutomation, ui);
+            }
             return (T)instance;
         }
     }

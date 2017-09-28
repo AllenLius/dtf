@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using Dtf.Core;
 
-    public abstract class WinEndpoint : Endpoint
+    public abstract class WinEndpoint : Core.IEndpoint
     {
         private List<WeakReference> m_objectRefs = new List<WeakReference>();
         private IWinAutomation m_winAutomation;
@@ -21,7 +21,7 @@
             m_objectMap.Add(typeof(IUiInspectorFactory), new WinUiInspectorFactory(winAutomation));
         }
 
-        public override T QueryInterface<T>()
+        public T QueryInterface<T>()
         {
             object obj;
             m_objectMap.TryGetValue(typeof(T), out obj);

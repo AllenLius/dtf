@@ -12,7 +12,7 @@ namespace Dtf.Core
         private static readonly Proxy _WSHttpProxy;
         private static Binding m_binding;
 
-        private static List<WeakReference<object>> _instanceRefs = new List<WeakReference<object>>();
+        private static List<WeakReference> _instanceRefs = new List<WeakReference>();
         private static List<string> _endpoints = new List<string>();
 
         //private static string _server;
@@ -35,7 +35,8 @@ namespace Dtf.Core
             binding.ReaderQuotas.MaxArrayLength = int.MaxValue;
             binding.ReaderQuotas.MaxBytesPerRead = int.MaxValue;
             binding.ReaderQuotas.MaxNameTableCharCount = int.MaxValue;
-            _WSHttpProxy = new Proxy(binding);
+            //_WSHttpProxy = new Proxy(binding);
+            _WSHttpProxy = new Proxy(new BasicHttpBinding(BasicHttpSecurityMode.None));
         }
 
         public Proxy(Binding binding)
@@ -49,12 +50,11 @@ namespace Dtf.Core
             for (int i = 0; i < _instanceRefs.Count; )
             {
                 var instanceRef = _instanceRefs[i];
-                object target;
-                if (instanceRef.TryGetTarget(out target))
+                if (instanceRef.IsAlive)
                 {
-                    if (target is T && _endpoints[i].Equals(server, StringComparison.InvariantCulture))
+                    if (instanceRef.Target is T && _endpoints[i].Equals(server, StringComparison.InvariantCulture))
                     {
-                        instance = (T)target;
+                        instance = (T)instanceRef.Target;
                     }
                     i++;
                 }

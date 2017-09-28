@@ -55,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Keyboard.cs" />
-    <Compile Include="IEndpoint.cs" />
     <Compile Include="Mouse.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="WinMousePattern.cs" />

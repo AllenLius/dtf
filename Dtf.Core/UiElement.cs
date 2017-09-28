@@ -26,7 +26,7 @@ namespace Dtf.Core
         {
             Stack<string> path = new Stack<string>();
             var uiElement = this;
-            while(uiElement != null)
+            while (uiElement != null)
             {
                 path.Push(uiElement.m_expression.ToString());
                 uiElement = uiElement.Parent;
@@ -50,7 +50,7 @@ namespace Dtf.Core
         {
             get
             {
-                //if (m_fullExpression == null)
+                if (m_fullExpression == null)
                 {
                     m_fullExpression = GetFullExpression();
                 }

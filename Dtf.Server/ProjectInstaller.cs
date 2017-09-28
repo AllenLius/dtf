@@ -21,8 +21,8 @@ namespace Dtf.Server
             m_serviceProcessInstaller.Password = null;
             m_serviceProcessInstaller.Username = null;
 
-            m_serviceInstaller.DisplayName = "DTF Job Server";
-            m_serviceInstaller.ServiceName = "DtfJobServer";
+            m_serviceInstaller.DisplayName = "DTF Server";
+            m_serviceInstaller.ServiceName = "DtfServer";
             m_serviceInstaller.StartType = ServiceStartMode.Automatic;
 
             Installers.AddRange(new Installer[] { m_serviceProcessInstaller, m_serviceInstaller });

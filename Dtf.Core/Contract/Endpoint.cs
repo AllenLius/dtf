@@ -8,13 +8,13 @@ namespace Dtf.Core
 {
     using System.Reflection;
 
-    public abstract class Endpoint
+    public interface IEndpoint
     {
         /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>Factory</returns>
-        public abstract T QueryInterface<T>();
+        T QueryInterface<T>();
     }
 }

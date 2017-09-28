@@ -50,7 +50,7 @@
     <Compile Include="Contract\IApp.cs" />
     <Compile Include="Contract\IInvokePattern.cs" />
     <Compile Include="Contract\ITreeWalkerContext.cs" />
-    <Compile Include="Contract\ITextPattern.cs" />
+    <Compile Include="Contract\IValuePattern.cs" />
     <Compile Include="Contract\IKeyboardPattern.cs" />
     <Compile Include="Contract\IMousePattern.cs" />
     <Compile Include="Contract\PatternAttribute.cs" />
@@ -121,6 +121,7 @@
   <ItemGroup>
     <None Include="UiInfo.xsd">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

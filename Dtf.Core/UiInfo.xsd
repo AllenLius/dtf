@@ -6,7 +6,7 @@
   <xs:element name="UiInfo">
     <xs:complexType>
       <xs:sequence>
-        
+
         <!--Resources-->
         <xs:element name="Resources" maxOccurs="1">
           <xs:complexType>
@@ -21,7 +21,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        
+
         <!--UiElements-->
         <xs:element name="UiElements" maxOccurs="1">
           <xs:complexType>
@@ -29,6 +29,7 @@
               <xs:element ref="UiElement" minOccurs="0" maxOccurs="unbounded"></xs:element>
             </xs:sequence>
           </xs:complexType>
+          <!--unique-->
           <xs:key name="NameKey">
             <xs:selector xpath="UiElement" />
             <xs:field xpath="@Name" />
@@ -59,18 +60,18 @@
               </xs:choice>
             </xs:sequence>
           </xs:complexType>
+          <!--unique-->
+          <xs:key name="NameKey2">
+            <xs:selector xpath="UiElement" />
+            <xs:field xpath="@Name" />
+          </xs:key>
         </xs:element>
       </xs:sequence>
       <xs:attribute name="Name" type="xs:Name" use="required" />
       <xs:attribute name="Patterns" use="optional" />
     </xs:complexType>
-    <!--unique-->
-    <xs:unique name="NameUnique">
-      <xs:selector xpath=".//*" />
-      <xs:field xpath="@Name" />
-    </xs:unique>
   </xs:element>
-  
+
   <xs:element name="Expression" abstract="true"></xs:element>
   <xs:element name="PropertyExpression" abstract="true" substitutionGroup="Expression"></xs:element>
   <xs:element name="GroupExpression" abstract="true" substitutionGroup="Expression">
@@ -115,7 +116,7 @@
       <xs:attribute name="Property" type="xs:Name" use="required"></xs:attribute>
     </xs:complexType>
   </xs:element>
-  
+
   <!--FormattedContains Expression-->
   <xs:element name="FormattedContains" substitutionGroup="PropertyExpression">
     <xs:complexType mixed="true">
@@ -133,11 +134,11 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  
+
   <!--And Expression-->
   <xs:element name="And" substitutionGroup="GroupExpression"></xs:element>
 
   <!--Or Expression-->
   <xs:element name="Or" substitutionGroup="GroupExpression"></xs:element>
-  
+
 </xs:schema>

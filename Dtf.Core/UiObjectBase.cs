@@ -117,12 +117,16 @@ namespace Dtf.Core
         {
             DateTime start = DateTime.Now;
             UiObjectBase t = null;
-            while (DateTime.Now - start < timeout)
+            while(true)
             {
                 t = FindFirst(ui);
                 if (t != null)
                 {
                     return t;
+                }
+                if (DateTime.Now - start < timeout)
+                {
+                    break;
                 }
                 Waiter.WaitOne(UITryInterval);
             }

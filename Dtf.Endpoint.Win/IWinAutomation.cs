@@ -59,7 +59,7 @@ namespace Dtf.Endpoint.Win
         void InvokePattern_Invoke(string ui);
 
         [OperationContract]
-        void TextPattern_SetText(string ui, string text);
+        void ValuePattern_SetValue(string ui, string value);
 
         [OperationContract]
         void TreeWalker_Set(string filter);

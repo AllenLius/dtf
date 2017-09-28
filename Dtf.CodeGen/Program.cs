@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dtf.CodeGen
+﻿namespace Dtf.CodeGen
 {
     using Microsoft.CSharp;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Text.RegularExpressions;
+    using System;
     using System.CodeDom;
     using System.CodeDom.Compiler;
-    using Dtf.Core;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
     using System.Reflection;
-    //using System.Linq.Expressions;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using Dtf.Core;
 
     class Program
     {
@@ -54,7 +51,9 @@ namespace Dtf.CodeGen
         static CodeTypeDeclaration codeTypeUiElements;
         static string varNameApp;
         static string fieldNameApp;
-        static HashSet<string> uiNames = new HashSet<string>();
+        static string PropertyNameApp;
+        static HashSet<string> typeNames = new HashSet<string>();
+        static HashSet<string> extensionTypeNames = new HashSet<string>(); // Make static class ("public class OkEx" -> "public static class OkEx")
 
         static void Main(string[] args)
         {
@@ -90,13 +89,18 @@ namespace Dtf.CodeGen
                 providers = namedArgs["provider"];
             }
 
+            // add reverse names
+            typeNames.Add(typeNameApp);
+            typeNames.Add(TypeNameResources);
+            typeNames.Add(TypeNameUiElements);
+
+            PropertyNameApp = typeNameApp;
+
             UiInfoFactory factory = new UiInfoFactory(File.OpenRead(uiomFile)); // uiom information
             
             // namespace [Namespace]
             codeNs = new CodeNamespace(nameSpace);
             CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
-            codeNs.Imports.Add(new CodeNamespaceImport("System.IO"));
-            codeNs.Imports.Add(new CodeNamespaceImport(typeof(UiElement).Namespace)); // Dtf.Core
 
             // class in codeNs
             codeTypeApp = new CodeTypeDeclaration(typeNameApp) { Attributes = MemberAttributes.Final | MemberAttributes.Public, IsPartial = true }; // class [ClassName]
@@ -109,11 +113,11 @@ namespace Dtf.CodeGen
             codeNs.Types.Add(codeTypeUiElements);
 
             #region Init codeTypeApp 
-            CodeMemberField codeFieldEndpoint = new CodeMemberField(typeof(Endpoint), FieldNameEndpoint); // private Endpoint m_endpoint
+            CodeMemberField codeFieldEndpoint = new CodeMemberField(typeof(IEndpoint), FieldNameEndpoint); // private Endpoint m_endpoint
             CodeMemberField codeFieldResource = new CodeMemberField(new CodeTypeReference(TypeNameResources), FieldNameResources);
             CodeMemberField codeFieldUi = new CodeMemberField(new CodeTypeReference(TypeNameUiElements), FieldNameUi);
             CodeConstructor codeTypeCtorApp = new CodeConstructor() { Attributes = MemberAttributes.Final | MemberAttributes.Public }; // private [Product]App(Endpoint endpoint)
-            CodeMemberProperty codePropertyEndpoint = new CodeMemberProperty() { Name = PropertyNameEndpoint, Attributes = MemberAttributes.Final | MemberAttributes.Public, Type = new CodeTypeReference(typeof(Endpoint)), HasGet = true };
+            CodeMemberProperty codePropertyEndpoint = new CodeMemberProperty() { Name = PropertyNameEndpoint, Attributes = MemberAttributes.Final | MemberAttributes.Public, Type = new CodeTypeReference(typeof(IEndpoint)), HasGet = true };
             CodeMemberProperty codePropertyResources = new CodeMemberProperty() { Name = PropertyNameResources, Attributes = MemberAttributes.Final | MemberAttributes.Public, Type = new CodeTypeReference(TypeNameResources), HasGet = true };
             CodeMemberProperty codePropertyUi = new CodeMemberProperty() { Name = PropertyNameUi, Attributes = MemberAttributes.Final | MemberAttributes.Public, Type = new CodeTypeReference(TypeNameUiElements), HasGet = true };
             codeTypeApp.Members.Add(codeFieldEndpoint); // add m_endpoint field
@@ -126,7 +130,7 @@ namespace Dtf.CodeGen
 
             // ctor
             codeTypeCtorApp.Parameters.Add( // add parameter to ctor
-                new CodeParameterDeclarationExpression(typeof(Endpoint), CtorParamNameEndpoint));
+                new CodeParameterDeclarationExpression(typeof(IEndpoint), CtorParamNameEndpoint));
             codeTypeCtorApp.Statements.Add( // m_endpoint = endpoint
                 new CodeAssignStatement(
                     new CodeVariableReferenceExpression(FieldNameEndpoint),
@@ -225,6 +229,13 @@ namespace Dtf.CodeGen
             cs.GenerateCodeFromNamespace(codeNs, sw, codeGenOptions);
             sw.Flush();
             string code = sw.ToString();
+
+            // make static class
+            foreach(var typeName in extensionTypeNames)
+            {
+                code = code.Replace("\r\n    public class " + typeName, "\r\n    public static class " + typeName);
+            }
+
             File.WriteAllText(outFile, code);
         }
 
@@ -236,12 +247,12 @@ namespace Dtf.CodeGen
         {
             string uiName = uiInfo.Name;
             int n = 2;
-            while (uiNames.Contains(uiName))
+            while (typeNames.Contains(uiName))
             {
                 uiName = uiInfo.Name + n.ToString();
                 n++;
             }
-            uiNames.Add(uiName);
+            typeNames.Add(uiName);
 
             // add UiElement type
             CodeTypeDeclaration codeTypeUiElement = new CodeTypeDeclaration() { Name = uiName };
@@ -258,19 +269,35 @@ namespace Dtf.CodeGen
                     new CodeVariableReferenceExpression(fieldNameApp),
                     new CodeVariableReferenceExpression(varNameApp)));
 
+            // extension class
+            CodeTypeDeclaration codeTypeEx = new CodeTypeDeclaration(uiName + "Ex");
+            typeNames.Add(codeTypeEx.Name);
+            extensionTypeNames.Add(codeTypeEx.Name);
+            codeNs.Types.Add(codeTypeEx);
+
             // inherit UiElement
             codeTypeUiElement.BaseTypes.Add(new CodeTypeReference(typeof(UiElement)));
 
             // add and implement IUiInspector
-            ImplementInterface(codeTypeUiElement, typeof(IUiInspectorFactory), typeof(IUiInspector), null);
+            ImplementInterface(uiName, codeTypeEx, typeof(IUiInspectorFactory), typeof(IUiInspector), false);
 
             // add click
-            ImplementInterface(codeTypeUiElement, typeof(IPatternFactory), typeof(IMousePattern), typeof(IMousePattern));
+            ImplementInterface(uiName, codeTypeEx, typeof(IPatternFactory), typeof(IMousePattern), true);
 
+            // implement patterns
             foreach (var type in uiInfo.Patterns)
             {
-                ImplementInterface(codeTypeUiElement, typeof(IPatternFactory), type, type);
+                ImplementInterface(uiName, codeTypeEx, typeof(IPatternFactory), type, true);
             }
+
+            // add app property
+            CodeMemberProperty codePropertyApp = new CodeMemberProperty() { Attributes = MemberAttributes.Public | MemberAttributes.Final, Name = PropertyNameApp, Type = new CodeTypeReference(typeNameApp) };
+            codeTypeUiElement.Members.Add(codePropertyApp);
+            codePropertyApp.GetStatements.Add(
+                new CodeMethodReturnStatement(
+                    new CodeFieldReferenceExpression(
+                        new CodeThisReferenceExpression(),
+                    fieldNameApp)));
 
             // add UI propety to UiElements
             CodeMemberProperty codePropertyUiElement = new CodeMemberProperty() { Attributes = MemberAttributes.Final | MemberAttributes.Public, Name = uiInfo.Name, Type = new CodeTypeReference(uiName) };
@@ -290,15 +317,15 @@ namespace Dtf.CodeGen
         }
 
         /// <summary>
-        /// Add interface implement of type
+        /// Implement interface method by using extension method.
         /// </summary>
-        /// <param name="codeType">Type to implement</param>
-        /// <param name="queryType">Template type of QueryInterface</param>
+        /// <param name="typeName">UI type</param>
+        /// <param name="codeTypeEx">Extension type</param>
+        /// <param name="factoryType">Factory</param>
         /// <param name="implementType">Interface to implement</param>
-        /// <param name="createType">Template type of Create</param>
-        static void ImplementInterface(CodeTypeDeclaration codeType, Type queryType, Type implementType, Type createType)
+        /// <param name="genericCreate">If Create method is generic</param>
+        static void ImplementInterface(string typeName, CodeTypeDeclaration codeTypeEx, Type factoryType, Type implementType, bool genericCreate)
         {
-            codeType.BaseTypes.Add(implementType);
             foreach (var memberInfo in implementType.GetMembers())
             {
                 if (memberInfo is MethodInfo)
@@ -308,10 +335,12 @@ namespace Dtf.CodeGen
                     CodeMemberMethod codeMethod = new CodeMemberMethod()
                     {
                         Name = methodName,
-                        Attributes = MemberAttributes.Final | MemberAttributes.Public,
+                        Attributes = MemberAttributes.Final | MemberAttributes.Public | MemberAttributes.Static,
                         ReturnType = new CodeTypeReference(methodInfo.ReturnType)
                     };
-                    codeType.Members.Add(codeMethod);
+                    string varTypeName = char.ToLower(typeName[0]).ToString() + string.Join(string.Empty, typeName.Skip(1).ToArray());
+                    codeTypeEx.Members.Add(codeMethod);
+                    codeMethod.Parameters.Add(new CodeParameterDeclarationExpression("this " + typeName, varTypeName));
                     foreach (var p in methodInfo.GetParameters())
                     {
                         CodeParameterDeclarationExpression parameter = new CodeParameterDeclarationExpression(new CodeTypeReference(p.ParameterType), p.Name);
@@ -321,27 +350,36 @@ namespace Dtf.CodeGen
                     CodePropertyReferenceExpression endpointField = new CodePropertyReferenceExpression(new CodeVariableReferenceExpression(fieldNameApp), PropertyNameEndpoint);
                     CodeMethodInvokeExpression queryMethod = new CodeMethodInvokeExpression(
                         new CodeMethodReferenceExpression(
-                            endpointField,
+                            new CodePropertyReferenceExpression(
+                                new CodePropertyReferenceExpression(
+                                    new CodeVariableReferenceExpression(varTypeName),
+                                    PropertyNameApp),
+                                PropertyNameEndpoint),
                             EndpointMethodQueryInterfaceName,
-                            new CodeTypeReference(queryType)));
+                            new CodeTypeReference(factoryType)));
 
                     CodeMethodReturnStatement queryReturnStatment = new CodeMethodReturnStatement(queryMethod);
                     CodeMethodReferenceExpression codeMethodCreateRef = new CodeMethodReferenceExpression(queryReturnStatment.Expression,
                             PatternFactoryMethodNameCreate);
-                    if (createType != null)
+                    if (genericCreate)
                     {
-                        codeMethodCreateRef.TypeArguments.Add(new CodeTypeReference(createType));
+                        codeMethodCreateRef.TypeArguments.Add(new CodeTypeReference(implementType));
                     }
-                    CodeMethodInvokeExpression createMethod = new CodeMethodInvokeExpression(codeMethodCreateRef,
-                        new CodeVariableReferenceExpression(PropertyNameFullExpression));
+                    CodeMethodInvokeExpression createMethod = new CodeMethodInvokeExpression(
+                        codeMethodCreateRef,
+                        new CodePropertyReferenceExpression(
+                            new CodeVariableReferenceExpression(varTypeName),
+                            PropertyNameFullExpression));
+                            
 
 
                     List<CodeVariableReferenceExpression> varList = new List<CodeVariableReferenceExpression>();
-                    foreach (CodeParameterDeclarationExpression p in codeMethod.Parameters)
+                    for (int i = 1; i < codeMethod.Parameters.Count; i++)
                     {
+                        CodeParameterDeclarationExpression p = codeMethod.Parameters[i];
                         CodeVariableReferenceExpression varExpr = new CodeVariableReferenceExpression(p.Name);
                         varList.Add(varExpr);
-                    }
+                    } 
 
                     CodeMethodInvokeExpression callMethod = new CodeMethodInvokeExpression(
                         createMethod,

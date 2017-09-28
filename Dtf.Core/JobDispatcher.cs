@@ -54,7 +54,7 @@ namespace Dtf.Core
                 //toRelative = NetHelper.ToDnsAddress(toRelative);
                 toRelative = new Uri(toRelative).AbsolutePath;
                 toRelative = toRelative.Substring(m_proxyServer.AbsolutePath.Length);
-                toRelative = "/" + toRelative.Replace(m_proxyServer.ToString(), String.Empty); ;
+                toRelative = "/" + toRelative.Replace(m_proxyServer.ToString(), String.Empty);
                 Log.Default.Trace("toRelative:{0}", toRelative);
                 SoapCallProxy callProxy = m_jobProxy.GetProxy(toRelative);
                 if (callProxy!=null)
@@ -70,9 +70,9 @@ namespace Dtf.Core
             }
             catch (Exception ex)
             {
-                Log.Default.Error("TODO:every exception here should be fix");
+                Log.Default.Error("TODO: every exception here must be fixed!");
                 Log.Default.LogException(ex);
-                returnMessage = new SoapFaultMessage(SoapCode.Server, "Framework error, should be fix!\r\n" + ex.GetExceptionText());
+                returnMessage = new SoapFaultMessage(SoapCode.Server, "Framework error, should be fixed!\r\n" + ex.GetExceptionText());
             }
             return SoapMessage.Serialize(returnMessage);
         }
